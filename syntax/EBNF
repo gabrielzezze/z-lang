@@ -12,7 +12,7 @@ IDENTIFIER = ALPHACHAR, { ALPHACHAR | NUMERIC | "_" };
 
 
 EOL = ".z";
-TYPE = "numz" | "Bool" | "charz"
+TYPE = "numz" | "bool" | "charz"
 
 FUNC = "func", TYPE, IDENTIFIER, "(", { ARG }, ")", BLOCK, EOL;
 ARG = TYPE, IDENTIFIER;

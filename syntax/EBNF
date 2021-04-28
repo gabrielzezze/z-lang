@@ -1,0 +1,43 @@
+
+
+MAIN = FUNC EOL;
+
+STRING = "'", [ALPHACHAR], "'";
+ALPHACHAR = (a | b | ... | z | A | B | ... | Z);
+
+NUMBER = NUMERIC, { NUMERIC };
+NUMERIC = (1 | 2| 3 | 4 | 5 | 6 | 7 | 8 | 9);
+
+IDENTIFIER = ALPHACHAR, { ALPHACHAR | NUMERIC | "_" };
+
+
+EOL = ".z";
+TYPE = "numz" | "bool" | "charz"
+
+FUNC = "func", TYPE, IDENTIFIER, "(", { ARG }, ")", BLOCK, EOL;
+ARG = TYPE, IDENTIFIER;
+
+BLOCK = "{", [ACTION, EOL] "}";
+ACTION = ( PRINT | ASSIGNMENT | WHILE | FUNC_CALL | CONDITION | RETURN )
+
+PRINT = "zPrint", "(", (EXPRESION | COMPARISON), ")", EOL;
+
+ASSIGNMENT = "var", IDENTIFIER, "->", TYPE, "=", (EXPRESSION | COMPARISON | NUMBER | STRING), EOL;
+
+WHILE = "While", "(", COMPARISON, ")", BLOCK, EOL;
+
+CONDITION = "If", ( ("(", COMPARISON, ")") | COMPARISON ), BLOCK, { ELIF | ELSE | EOL };
+ELIF = "Elif", "(", COMPARISSON, ")", BLOCK, { ELIF | ELSE };
+ELSE = "Else", BLOCK, EOL;
+
+FUNC_CALL = IDENTIFIER, "(", (EXPRESSION | COMPARISON), {",", (EXPRESSION | COMPARISON)}, ")", EOL;
+
+RETURN = "return", (EXPRESSION | COMPARISON), EOL;
+
+
+EXPRESSION = TERM, { ("+" | "-"), TERM } ;
+TERM = FACTOR, { ("*" | "/"), FACTOR } ;
+FACTOR = (("+" | "-"), FACTOR) | NUMBER | "(", EXPRESSION, ")" | IDENTIFIER ;
+
+COMPARISON = EXPRESSION, ("is_equal_to", "is_not_equal_to", "is_greater_than", "is_greater_equal_than", "is_lesser_than", "is_lesser_equal_than"), EXPRESSION;
+

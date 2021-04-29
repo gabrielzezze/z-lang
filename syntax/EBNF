@@ -17,7 +17,7 @@ TYPE = "numz" | "bool" | "charz"
 FUNC = "func", TYPE, IDENTIFIER, "(", { ARG }, ")", BLOCK, EOL;
 ARG = TYPE, IDENTIFIER;
 
-BLOCK = "{", [ACTION, EOL] "}";
+BLOCK = "{", [ACTION], "}";
 ACTION = ( PRINT | ASSIGNMENT | WHILE | FUNC_CALL | CONDITION | RETURN )
 
 PRINT = "zPrint", "(", (EXPRESION | COMPARISON), ")", EOL;
@@ -26,11 +26,11 @@ ASSIGNMENT = "var", IDENTIFIER, "->", TYPE, "=", (EXPRESSION | COMPARISON | NUMB
 
 WHILE = "While", "(", COMPARISON, ")", BLOCK, EOL;
 
-CONDITION = "If", ( ("(", COMPARISON, ")") | COMPARISON ), BLOCK, { ELIF | ELSE | EOL };
-ELIF = "Elif", "(", COMPARISSON, ")", BLOCK, { ELIF | ELSE };
+CONDITION = "If", ( ("(", COMPARISON, ")") | COMPARISON ), BLOCK, ( ELIF | ELSE | EOL );
+ELIF = "Elif", "(", COMPARISSON, ")", BLOCK, ( ELIF | ELSE | EOL );
 ELSE = "Else", BLOCK, EOL;
 
-FUNC_CALL = IDENTIFIER, "(", (EXPRESSION | COMPARISON), {",", (EXPRESSION | COMPARISON)}, ")", EOL;
+FUNC_CALL = IDENTIFIER, "(", (EXPRESSION), {",", (EXPRESSION)}, ")", EOL;
 
 RETURN = "return", (EXPRESSION | COMPARISON), EOL;
 

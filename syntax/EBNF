@@ -1,6 +1,6 @@
 
 
-MAIN = FUNC EOL;
+MAIN = FUNC;
 
 STRING = "'", [ALPHACHAR], "'";
 ALPHACHAR = (a | b | ... | z | A | B | ... | Z);

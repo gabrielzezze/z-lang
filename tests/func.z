@@ -1,8 +1,10 @@
 func x() {
-    print() .z
+    zPrint() .z
     While() {} .z
     
-    numz x = 2 .z
+    var x -> numz = 2 + 2 .z
+
+    bool y = (2 is_equal_to 3)
 
     return
 } .z

@@ -1,138 +1,67 @@
-from src.Token import Token
+from sly import Lexer
 from src.Types.TokenTypes import TokenTypes
 
-class Tokenizer:
-    KEYWORDS = {
-        'func':             TokenTypes.FUNCTION, 
-        'zPrint':           TokenTypes.PRINT, 
-        'If':               TokenTypes.IF,
-        'Else':             TokenTypes.ELSE, 
-        'Elif':             TokenTypes.ELIF, 
-        'While':            TokenTypes.WHILE, 
-        'var':              TokenTypes.VAR, 
-        'return':           TokenTypes.RETURN, 
-        'is_equal_to':      TokenTypes.EQUAL, 
-        'is_not_equal_to':  TokenTypes.NOT_EQUAL, 
-        'is_greater_than':  TokenTypes.GREATER, 
-        'is_greater_equal_than': TokenTypes.GREATER_EQUAL,
-        'is_lesser_than':   TokenTypes.LESSER, 
-        'is_lesser_equal_than':  TokenTypes.LESSER_EQUAL,
-        'numz':             TokenTypes.INT,
-        'charz':            TokenTypes.STRING,
-        'bool':             TokenTypes.BOOL,
-        '.z':               TokenTypes.EOL
+class ZTokenizer(Lexer):
+
+    tokens = {
+        NUMBER, PLUS, MINUS, MULTIPLICATION,
+        DIVISION, PARENTHESIS_OPEN, PARENTHESIS_CLOSE, WHILE, 
+        IDENTIFIER, ASSIGNMENT, EOL, PRINT, 
+        BLOCK_START, BLOCK_END, EQUAL,
+        GREATER, GREATER_EQUAL, LESSER, LESSER_EQUAL, STRING, 
+        TRUE, FALSE, STRING_TYPE, INT, IF, ELSE, ELIF, VAR,
+        BOOL_TYPE, RETURN, FUNCTION, NOT_EQUAL, OR, AND, ARROW
     }
 
-    def __init__(self, code: str):
-        # Constants
-        self.MAX_POSITION = len(code) - 1
 
-        # Code vars
-        self.code = code
-        self.position = 0
-        
-        self.parenthesis_opened = 0
-        self.brackets_opened = 0
-        self.actual = None
-
-
-    def _check_invalid_position(self):
-        if self.position > self.MAX_POSITION:
-            if self.position == self.MAX_POSITION + 1:
-                return Token(value='', token_type=TokenTypes.EOF)
-
-            raise IndexError('Invalid position @ Tokenize.py - line 17')
-        return None
-
-    def _handle_alnum_value(self, value: str):
-        token_value = ''
-        while value.isalnum() or value in ['_', '.']:
-            token_value += value
-            self.position += 1
-            if self.position >= self.MAX_POSITION + 1:
-                break
-            value = self.code[self.position]
-
-        token_type = TokenTypes.IDENTIFER
-        if token_value in self.KEYWORDS.keys():
-            token_type = self.KEYWORDS[token_value]
-
-        return token_type, token_value
-
-    def _handle_parenthesis_value(self, value: str):
-        token_type = TokenTypes.PARENTHESIS_OPEN
-        if value == ')':
-            token_type = TokenTypes.PARENTHESIS_CLOSE
-            self.parenthesis_opened -= 1
-        else:
-            self.parenthesis_opened += 1
-        
-        self.position += 1
-        return token_type, value
-
-    def _handle_brackets_value(self, value: str):
-        token_type = TokenTypes.BLOCK_START
-        if value == '}':
-            token_type = TokenTypes.BLOCK_END
-            self.brackets_opened -= 1
-        else:
-            self.brackets_opened += 1
-
-        self.position += 1
-        return token_type, value
-
-
-    def _handle_number_value(self, value: str):
-        token_value = ''
-        while value.isdigit():
-            token_value += value
-            self.position += 1
-            if self.position >= self.MAX_POSITION + 1:
-                break
-            value = self.code[self.position]
-
-        return TokenTypes.NUMBER, int(token_value)
-
-
-    def _handle_equal_sign_value(self, value: str):
-        self.position += 1
-        return TokenTypes.ASSIGNMENT, value
-
-
-    def _ignore_spaces(self):
-        while self.code[self.position] == ' ':
-            self.position += 1
-
-    def select_next(self):
-        eof = self._check_invalid_position()
-        if eof is not None:
-            self.actual = eof
-            return
-
-        token_type = None
-        token_value = None
-
-        self._ignore_spaces()
-        value = self.code[self.position]
-
-        if value in ['(', ')']:
-            token_type, token_value = self._handle_parenthesis_value(value=value)
-
-        elif value in ['{', '}']:
-            token_type, token_value = self._handle_brackets_value(value=value)
-        
-        elif value.isdigit():
-            token_type, token_value = self._handle_number_value(value=value)
-
-        elif value == '=':
-            token_type, token_value = self._handle_equal_sign_value(value=value)
-
-        elif value.isalnum() or value in ['.']:
-            token_type, token_value = self._handle_alnum_value(value=value)
+    ARROW               = r'->'
+    NUMBER              = r'\d+'
+    PLUS                = r'\+'
+    MINUS               = r'-'
+    MULTIPLICATION      = r'\*'
+    DIVISION            = r'/'
+    PARENTHESIS_OPEN    = r'\('
+    PARENTHESIS_CLOSE   = r'\)'
+    ASSIGNMENT          = r'='
+    EOL                 = r'.z'
+    BLOCK_START         = r'\{'
+    BLOCK_END           = r'\}'
+    STRING              = r'''("[^"\\]*(\\.[^"\\]*)*"|'[^'\\]*(\\.[^'\\]*)*')'''
+    IDENTIFIER          = r'[a-zA-Z_][a-zA-Z0-9_]*'
     
-        self.actual = Token(
-            value=token_value,
-            token_type=token_type
-        )
+    IDENTIFIER['While'] = WHILE
+    IDENTIFIER['zPrint'] = PRINT
+    IDENTIFIER['is_equal_to'] = EQUAL
+    IDENTIFIER['is_not_equal_to'] = NOT_EQUAL
+    IDENTIFIER['is_greater_than'] = GREATER
+    IDENTIFIER['is_greate_equal_than'] = GREATER_EQUAL
+    IDENTIFIER['is_lesser_than'] = LESSER
+    IDENTIFIER['is_lesser_equal_than'] = LESSER_EQUAL
+    IDENTIFIER['charz'] = STRING_TYPE
+    IDENTIFIER['true'] = TRUE
+    IDENTIFIER['false'] = FALSE
+    IDENTIFIER['numz'] = INT
+    IDENTIFIER['If'] = IF
+    IDENTIFIER['Else'] = ELSE
+    IDENTIFIER['Elif'] = ELIF
+    IDENTIFIER['var'] = VAR
+    IDENTIFIER['bool'] = BOOL_TYPE
+    IDENTIFIER['return'] = RETURN
+    IDENTIFIER['func'] = FUNCTION
+    IDENTIFIER['or'] = OR
+    IDENTIFIER['and'] = AND    
 
 
+    # Ignore new lines char #
+    ignore              = ' \t'
+    ignore_newline      = r'\n+'
+
+
+    # Extra action for newlines
+    def ignore_newline(self, t):
+        self.lineno += t.value.count('\n')
+
+
+    def error(self, t):
+        print("Illegal character '%s'" % t.value[0])
+        self.index += 1

@@ -1,0 +1,2137 @@
+Grammar:
+
+Rule 0     S' -> block
+Rule 1     block -> BLOCK_START BLOCK_END
+Rule 2     block -> BLOCK_START _1_repeat BLOCK_END
+Rule 3     _1_repeat -> _1_items
+Rule 4     _1_repeat -> <empty>
+Rule 5     _1_items -> _1_items _1_item
+Rule 6     _1_items -> _1_item
+Rule 7     _1_item -> command
+Rule 8     command -> block
+Rule 9     command -> IDENTIFIER ASSIGNMENT or_expression EOL
+Rule 10    command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL
+Rule 11    command -> VAR IDENTIFIER ARROW BOOL_TYPE EOL
+Rule 12    command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL
+Rule 13    command -> VAR IDENTIFIER ARROW STRING_TYPE EOL
+Rule 14    command -> VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL
+Rule 15    command -> VAR IDENTIFIER ARROW INT EOL
+Rule 16    command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL
+Rule 17    command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL
+Rule 18    command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL
+Rule 19    _2_repeat -> _2_items
+Rule 20    _2_repeat -> <empty>
+Rule 21    _2_items -> _2_items _2_item
+Rule 22    _2_items -> _2_item
+Rule 23    _2_item -> ELIF command
+Rule 24    _3_repeat -> _3_items
+Rule 25    _3_repeat -> <empty>
+Rule 26    _3_items -> _3_items _3_item
+Rule 27    _3_items -> _3_item
+Rule 28    _3_item -> ELSE command
+Rule 29    command -> WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command
+Rule 30    command -> PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL
+Rule 31    command -> EOL
+Rule 32    or_expression -> and_expression OR or_expression
+Rule 33    or_expression -> and_expression
+Rule 34    and_expression -> equal_expression AND and_expression
+Rule 35    and_expression -> equal_expression
+Rule 36    equal_expression -> relative_expression NOT_EQUAL equal_expression
+Rule 37    equal_expression -> relative_expression EQUAL equal_expression
+Rule 38    equal_expression -> relative_expression
+Rule 39    relative_expression -> expression LESSER_EQUAL relative_expression
+Rule 40    relative_expression -> expression GREATER_EQUAL relative_expression
+Rule 41    relative_expression -> expression LESSER relative_expression
+Rule 42    relative_expression -> expression GREATER relative_expression
+Rule 43    relative_expression -> expression
+Rule 44    expression -> term MINUS expression  [precedence=left, level=1]
+Rule 45    expression -> term PLUS expression  [precedence=left, level=1]
+Rule 46    expression -> term
+Rule 47    term -> factor DIVISION term  [precedence=left, level=2]
+Rule 48    term -> factor MULTIPLICATION term  [precedence=left, level=2]
+Rule 49    term -> factor
+Rule 50    factor -> FALSE
+Rule 51    factor -> TRUE
+Rule 52    factor -> STRING
+Rule 53    factor -> IDENTIFIER
+Rule 54    factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+Rule 55    factor -> MINUS factor  [precedence=right, level=3]
+Rule 56    factor -> PLUS factor  [precedence=right, level=3]
+Rule 57    factor -> NUMBER
+
+Unused terminals:
+
+    FUNCTION
+    RETURN
+
+Terminals, with rules where they appear:
+
+AND                  : 34
+ARROW                : 10 11 12 13 14 15
+ASSIGNMENT           : 9 10 12 14
+BLOCK_END            : 1 2
+BLOCK_START          : 1 2
+BOOL_TYPE            : 10 11
+DIVISION             : 47
+ELIF                 : 23
+ELSE                 : 17 28
+EOL                  : 9 10 11 12 13 14 15 16 17 18 30 31
+EQUAL                : 37
+FALSE                : 50
+FUNCTION             : 
+GREATER              : 42
+GREATER_EQUAL        : 40
+IDENTIFIER           : 9 10 11 12 13 14 15 53
+IF                   : 16 17 18
+INT                  : 14 15
+LESSER               : 41
+LESSER_EQUAL         : 39
+MINUS                : 44 55
+MULTIPLICATION       : 48
+NOT_EQUAL            : 36
+NUMBER               : 57
+OR                   : 32
+PARENTHESIS_CLOSE    : 16 17 18 29 30 54
+PARENTHESIS_OPEN     : 16 17 18 29 30 54
+PLUS                 : 45 56
+PRINT                : 30
+RETURN               : 
+STRING               : 52
+STRING_TYPE          : 12 13
+TRUE                 : 51
+VAR                  : 10 11 12 13 14 15
+WHILE                : 29
+error                : 
+
+Nonterminals, with rules where they appear:
+
+_1_item              : 5 6
+_1_items             : 3 5
+_1_repeat            : 2
+_2_item              : 21 22
+_2_items             : 19 21
+_2_repeat            : 18
+_3_item              : 26 27
+_3_items             : 24 26
+_3_repeat            : 18
+and_expression       : 32 33 34
+block                : 8 0
+command              : 7 16 17 17 18 23 28 29
+equal_expression     : 34 35 36 37
+expression           : 39 40 41 42 43 44 45
+factor               : 47 48 49 55 56
+or_expression        : 9 10 12 14 16 17 18 29 30 32 54
+relative_expression  : 36 37 38 39 40 41 42
+term                 : 44 45 46 47 48
+
+
+state 0
+
+    (0) S' -> . block
+    (1) block -> . BLOCK_START BLOCK_END
+    (2) block -> . BLOCK_START _1_repeat BLOCK_END
+    BLOCK_START     shift and go to state 2
+
+    block                          shift and go to state 1
+
+state 1
+
+    (0) S' -> block .
+
+
+state 2
+
+    (1) block -> BLOCK_START . BLOCK_END
+    (2) block -> BLOCK_START . _1_repeat BLOCK_END
+    (3) _1_repeat -> . _1_items
+    (4) _1_repeat -> .
+    (5) _1_items -> . _1_items _1_item
+    (6) _1_items -> . _1_item
+    (7) _1_item -> . command
+    (8) command -> . block
+    (9) command -> . IDENTIFIER ASSIGNMENT or_expression EOL
+    (10) command -> . VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL
+    (11) command -> . VAR IDENTIFIER ARROW BOOL_TYPE EOL
+    (12) command -> . VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL
+    (13) command -> . VAR IDENTIFIER ARROW STRING_TYPE EOL
+    (14) command -> . VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL
+    (15) command -> . VAR IDENTIFIER ARROW INT EOL
+    (16) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL
+    (17) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL
+    (18) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL
+    (29) command -> . WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command
+    (30) command -> . PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL
+    (31) command -> . EOL
+    (1) block -> . BLOCK_START BLOCK_END
+    (2) block -> . BLOCK_START _1_repeat BLOCK_END
+  ! shift/reduce conflict for BLOCK_END resolved as shift
+    BLOCK_END       shift and go to state 3
+    IDENTIFIER      shift and go to state 9
+    VAR             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+    EOL             shift and go to state 10
+    BLOCK_START     shift and go to state 2
+
+    _1_repeat                      shift and go to state 4
+    _1_items                       shift and go to state 5
+    _1_item                        shift and go to state 6
+    command                        shift and go to state 7
+    block                          shift and go to state 8
+
+state 3
+
+    (1) block -> BLOCK_START BLOCK_END .
+    $end            reduce using rule 1 (block -> BLOCK_START BLOCK_END .)
+    IDENTIFIER      reduce using rule 1 (block -> BLOCK_START BLOCK_END .)
+    VAR             reduce using rule 1 (block -> BLOCK_START BLOCK_END .)
+    IF              reduce using rule 1 (block -> BLOCK_START BLOCK_END .)
+    WHILE           reduce using rule 1 (block -> BLOCK_START BLOCK_END .)
+    PRINT           reduce using rule 1 (block -> BLOCK_START BLOCK_END .)
+    EOL             reduce using rule 1 (block -> BLOCK_START BLOCK_END .)
+    BLOCK_START     reduce using rule 1 (block -> BLOCK_START BLOCK_END .)
+    BLOCK_END       reduce using rule 1 (block -> BLOCK_START BLOCK_END .)
+    ELSE            reduce using rule 1 (block -> BLOCK_START BLOCK_END .)
+    ELIF            reduce using rule 1 (block -> BLOCK_START BLOCK_END .)
+
+
+state 4
+
+    (2) block -> BLOCK_START _1_repeat . BLOCK_END
+    BLOCK_END       shift and go to state 15
+
+
+state 5
+
+    (3) _1_repeat -> _1_items .
+    (5) _1_items -> _1_items . _1_item
+    (7) _1_item -> . command
+    (8) command -> . block
+    (9) command -> . IDENTIFIER ASSIGNMENT or_expression EOL
+    (10) command -> . VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL
+    (11) command -> . VAR IDENTIFIER ARROW BOOL_TYPE EOL
+    (12) command -> . VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL
+    (13) command -> . VAR IDENTIFIER ARROW STRING_TYPE EOL
+    (14) command -> . VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL
+    (15) command -> . VAR IDENTIFIER ARROW INT EOL
+    (16) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL
+    (17) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL
+    (18) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL
+    (29) command -> . WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command
+    (30) command -> . PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL
+    (31) command -> . EOL
+    (1) block -> . BLOCK_START BLOCK_END
+    (2) block -> . BLOCK_START _1_repeat BLOCK_END
+    BLOCK_END       reduce using rule 3 (_1_repeat -> _1_items .)
+    IDENTIFIER      shift and go to state 9
+    VAR             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+    EOL             shift and go to state 10
+    BLOCK_START     shift and go to state 2
+
+    _1_item                        shift and go to state 16
+    command                        shift and go to state 7
+    block                          shift and go to state 8
+
+state 6
+
+    (6) _1_items -> _1_item .
+    IDENTIFIER      reduce using rule 6 (_1_items -> _1_item .)
+    VAR             reduce using rule 6 (_1_items -> _1_item .)
+    IF              reduce using rule 6 (_1_items -> _1_item .)
+    WHILE           reduce using rule 6 (_1_items -> _1_item .)
+    PRINT           reduce using rule 6 (_1_items -> _1_item .)
+    EOL             reduce using rule 6 (_1_items -> _1_item .)
+    BLOCK_START     reduce using rule 6 (_1_items -> _1_item .)
+    BLOCK_END       reduce using rule 6 (_1_items -> _1_item .)
+
+
+state 7
+
+    (7) _1_item -> command .
+    IDENTIFIER      reduce using rule 7 (_1_item -> command .)
+    VAR             reduce using rule 7 (_1_item -> command .)
+    IF              reduce using rule 7 (_1_item -> command .)
+    WHILE           reduce using rule 7 (_1_item -> command .)
+    PRINT           reduce using rule 7 (_1_item -> command .)
+    EOL             reduce using rule 7 (_1_item -> command .)
+    BLOCK_START     reduce using rule 7 (_1_item -> command .)
+    BLOCK_END       reduce using rule 7 (_1_item -> command .)
+
+
+state 8
+
+    (8) command -> block .
+    IDENTIFIER      reduce using rule 8 (command -> block .)
+    VAR             reduce using rule 8 (command -> block .)
+    IF              reduce using rule 8 (command -> block .)
+    WHILE           reduce using rule 8 (command -> block .)
+    PRINT           reduce using rule 8 (command -> block .)
+    EOL             reduce using rule 8 (command -> block .)
+    BLOCK_START     reduce using rule 8 (command -> block .)
+    BLOCK_END       reduce using rule 8 (command -> block .)
+    ELSE            reduce using rule 8 (command -> block .)
+    ELIF            reduce using rule 8 (command -> block .)
+
+
+state 9
+
+    (9) command -> IDENTIFIER . ASSIGNMENT or_expression EOL
+    ASSIGNMENT      shift and go to state 17
+
+
+state 10
+
+    (31) command -> EOL .
+    IDENTIFIER      reduce using rule 31 (command -> EOL .)
+    VAR             reduce using rule 31 (command -> EOL .)
+    IF              reduce using rule 31 (command -> EOL .)
+    WHILE           reduce using rule 31 (command -> EOL .)
+    PRINT           reduce using rule 31 (command -> EOL .)
+    EOL             reduce using rule 31 (command -> EOL .)
+    BLOCK_START     reduce using rule 31 (command -> EOL .)
+    BLOCK_END       reduce using rule 31 (command -> EOL .)
+    ELSE            reduce using rule 31 (command -> EOL .)
+    ELIF            reduce using rule 31 (command -> EOL .)
+
+
+state 11
+
+    (10) command -> VAR . IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL
+    (11) command -> VAR . IDENTIFIER ARROW BOOL_TYPE EOL
+    (12) command -> VAR . IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL
+    (13) command -> VAR . IDENTIFIER ARROW STRING_TYPE EOL
+    (14) command -> VAR . IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL
+    (15) command -> VAR . IDENTIFIER ARROW INT EOL
+    IDENTIFIER      shift and go to state 18
+
+
+state 12
+
+    (16) command -> IF . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL
+    (17) command -> IF . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL
+    (18) command -> IF . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL
+    PARENTHESIS_OPEN shift and go to state 19
+
+
+state 13
+
+    (29) command -> WHILE . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command
+    PARENTHESIS_OPEN shift and go to state 20
+
+
+state 14
+
+    (30) command -> PRINT . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL
+    PARENTHESIS_OPEN shift and go to state 21
+
+
+state 15
+
+    (2) block -> BLOCK_START _1_repeat BLOCK_END .
+    $end            reduce using rule 2 (block -> BLOCK_START _1_repeat BLOCK_END .)
+    IDENTIFIER      reduce using rule 2 (block -> BLOCK_START _1_repeat BLOCK_END .)
+    VAR             reduce using rule 2 (block -> BLOCK_START _1_repeat BLOCK_END .)
+    IF              reduce using rule 2 (block -> BLOCK_START _1_repeat BLOCK_END .)
+    WHILE           reduce using rule 2 (block -> BLOCK_START _1_repeat BLOCK_END .)
+    PRINT           reduce using rule 2 (block -> BLOCK_START _1_repeat BLOCK_END .)
+    EOL             reduce using rule 2 (block -> BLOCK_START _1_repeat BLOCK_END .)
+    BLOCK_START     reduce using rule 2 (block -> BLOCK_START _1_repeat BLOCK_END .)
+    BLOCK_END       reduce using rule 2 (block -> BLOCK_START _1_repeat BLOCK_END .)
+    ELSE            reduce using rule 2 (block -> BLOCK_START _1_repeat BLOCK_END .)
+    ELIF            reduce using rule 2 (block -> BLOCK_START _1_repeat BLOCK_END .)
+
+
+state 16
+
+    (5) _1_items -> _1_items _1_item .
+    IDENTIFIER      reduce using rule 5 (_1_items -> _1_items _1_item .)
+    VAR             reduce using rule 5 (_1_items -> _1_items _1_item .)
+    IF              reduce using rule 5 (_1_items -> _1_items _1_item .)
+    WHILE           reduce using rule 5 (_1_items -> _1_items _1_item .)
+    PRINT           reduce using rule 5 (_1_items -> _1_items _1_item .)
+    EOL             reduce using rule 5 (_1_items -> _1_items _1_item .)
+    BLOCK_START     reduce using rule 5 (_1_items -> _1_items _1_item .)
+    BLOCK_END       reduce using rule 5 (_1_items -> _1_items _1_item .)
+
+
+state 17
+
+    (9) command -> IDENTIFIER ASSIGNMENT . or_expression EOL
+    (32) or_expression -> . and_expression OR or_expression
+    (33) or_expression -> . and_expression
+    (34) and_expression -> . equal_expression AND and_expression
+    (35) and_expression -> . equal_expression
+    (36) equal_expression -> . relative_expression NOT_EQUAL equal_expression
+    (37) equal_expression -> . relative_expression EQUAL equal_expression
+    (38) equal_expression -> . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    or_expression                  shift and go to state 23
+    and_expression                 shift and go to state 24
+    equal_expression               shift and go to state 25
+    relative_expression            shift and go to state 26
+    expression                     shift and go to state 27
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 18
+
+    (10) command -> VAR IDENTIFIER . ARROW BOOL_TYPE ASSIGNMENT or_expression EOL
+    (11) command -> VAR IDENTIFIER . ARROW BOOL_TYPE EOL
+    (12) command -> VAR IDENTIFIER . ARROW STRING_TYPE ASSIGNMENT or_expression EOL
+    (13) command -> VAR IDENTIFIER . ARROW STRING_TYPE EOL
+    (14) command -> VAR IDENTIFIER . ARROW INT ASSIGNMENT or_expression EOL
+    (15) command -> VAR IDENTIFIER . ARROW INT EOL
+    ARROW           shift and go to state 37
+
+
+state 19
+
+    (16) command -> IF PARENTHESIS_OPEN . or_expression PARENTHESIS_CLOSE command EOL
+    (17) command -> IF PARENTHESIS_OPEN . or_expression PARENTHESIS_CLOSE command ELSE command EOL
+    (18) command -> IF PARENTHESIS_OPEN . or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL
+    (32) or_expression -> . and_expression OR or_expression
+    (33) or_expression -> . and_expression
+    (34) and_expression -> . equal_expression AND and_expression
+    (35) and_expression -> . equal_expression
+    (36) equal_expression -> . relative_expression NOT_EQUAL equal_expression
+    (37) equal_expression -> . relative_expression EQUAL equal_expression
+    (38) equal_expression -> . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    or_expression                  shift and go to state 38
+    and_expression                 shift and go to state 24
+    equal_expression               shift and go to state 25
+    relative_expression            shift and go to state 26
+    expression                     shift and go to state 27
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 20
+
+    (29) command -> WHILE PARENTHESIS_OPEN . or_expression PARENTHESIS_CLOSE command
+    (32) or_expression -> . and_expression OR or_expression
+    (33) or_expression -> . and_expression
+    (34) and_expression -> . equal_expression AND and_expression
+    (35) and_expression -> . equal_expression
+    (36) equal_expression -> . relative_expression NOT_EQUAL equal_expression
+    (37) equal_expression -> . relative_expression EQUAL equal_expression
+    (38) equal_expression -> . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    or_expression                  shift and go to state 39
+    and_expression                 shift and go to state 24
+    equal_expression               shift and go to state 25
+    relative_expression            shift and go to state 26
+    expression                     shift and go to state 27
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 21
+
+    (30) command -> PRINT PARENTHESIS_OPEN . or_expression PARENTHESIS_CLOSE EOL
+    (32) or_expression -> . and_expression OR or_expression
+    (33) or_expression -> . and_expression
+    (34) and_expression -> . equal_expression AND and_expression
+    (35) and_expression -> . equal_expression
+    (36) equal_expression -> . relative_expression NOT_EQUAL equal_expression
+    (37) equal_expression -> . relative_expression EQUAL equal_expression
+    (38) equal_expression -> . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    or_expression                  shift and go to state 40
+    and_expression                 shift and go to state 24
+    equal_expression               shift and go to state 25
+    relative_expression            shift and go to state 26
+    expression                     shift and go to state 27
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 22
+
+    (53) factor -> IDENTIFIER .
+    DIVISION        reduce using rule 53 (factor -> IDENTIFIER .)
+    MULTIPLICATION  reduce using rule 53 (factor -> IDENTIFIER .)
+    MINUS           reduce using rule 53 (factor -> IDENTIFIER .)
+    PLUS            reduce using rule 53 (factor -> IDENTIFIER .)
+    LESSER_EQUAL    reduce using rule 53 (factor -> IDENTIFIER .)
+    GREATER_EQUAL   reduce using rule 53 (factor -> IDENTIFIER .)
+    LESSER          reduce using rule 53 (factor -> IDENTIFIER .)
+    GREATER         reduce using rule 53 (factor -> IDENTIFIER .)
+    NOT_EQUAL       reduce using rule 53 (factor -> IDENTIFIER .)
+    EQUAL           reduce using rule 53 (factor -> IDENTIFIER .)
+    AND             reduce using rule 53 (factor -> IDENTIFIER .)
+    OR              reduce using rule 53 (factor -> IDENTIFIER .)
+    EOL             reduce using rule 53 (factor -> IDENTIFIER .)
+    PARENTHESIS_CLOSE reduce using rule 53 (factor -> IDENTIFIER .)
+
+
+state 23
+
+    (9) command -> IDENTIFIER ASSIGNMENT or_expression . EOL
+    EOL             shift and go to state 41
+
+
+state 24
+
+    (32) or_expression -> and_expression . OR or_expression
+    (33) or_expression -> and_expression .
+    OR              shift and go to state 42
+    EOL             reduce using rule 33 (or_expression -> and_expression .)
+    PARENTHESIS_CLOSE reduce using rule 33 (or_expression -> and_expression .)
+
+
+state 25
+
+    (34) and_expression -> equal_expression . AND and_expression
+    (35) and_expression -> equal_expression .
+    AND             shift and go to state 43
+    OR              reduce using rule 35 (and_expression -> equal_expression .)
+    EOL             reduce using rule 35 (and_expression -> equal_expression .)
+    PARENTHESIS_CLOSE reduce using rule 35 (and_expression -> equal_expression .)
+
+
+state 26
+
+    (36) equal_expression -> relative_expression . NOT_EQUAL equal_expression
+    (37) equal_expression -> relative_expression . EQUAL equal_expression
+    (38) equal_expression -> relative_expression .
+    NOT_EQUAL       shift and go to state 44
+    EQUAL           shift and go to state 45
+    AND             reduce using rule 38 (equal_expression -> relative_expression .)
+    OR              reduce using rule 38 (equal_expression -> relative_expression .)
+    EOL             reduce using rule 38 (equal_expression -> relative_expression .)
+    PARENTHESIS_CLOSE reduce using rule 38 (equal_expression -> relative_expression .)
+
+
+state 27
+
+    (39) relative_expression -> expression . LESSER_EQUAL relative_expression
+    (40) relative_expression -> expression . GREATER_EQUAL relative_expression
+    (41) relative_expression -> expression . LESSER relative_expression
+    (42) relative_expression -> expression . GREATER relative_expression
+    (43) relative_expression -> expression .
+    LESSER_EQUAL    shift and go to state 46
+    GREATER_EQUAL   shift and go to state 47
+    LESSER          shift and go to state 48
+    GREATER         shift and go to state 49
+    NOT_EQUAL       reduce using rule 43 (relative_expression -> expression .)
+    EQUAL           reduce using rule 43 (relative_expression -> expression .)
+    AND             reduce using rule 43 (relative_expression -> expression .)
+    OR              reduce using rule 43 (relative_expression -> expression .)
+    EOL             reduce using rule 43 (relative_expression -> expression .)
+    PARENTHESIS_CLOSE reduce using rule 43 (relative_expression -> expression .)
+
+
+state 28
+
+    (44) expression -> term . MINUS expression
+    (45) expression -> term . PLUS expression
+    (46) expression -> term .
+    MINUS           shift and go to state 50
+    PLUS            shift and go to state 51
+    LESSER_EQUAL    reduce using rule 46 (expression -> term .)
+    GREATER_EQUAL   reduce using rule 46 (expression -> term .)
+    LESSER          reduce using rule 46 (expression -> term .)
+    GREATER         reduce using rule 46 (expression -> term .)
+    NOT_EQUAL       reduce using rule 46 (expression -> term .)
+    EQUAL           reduce using rule 46 (expression -> term .)
+    AND             reduce using rule 46 (expression -> term .)
+    OR              reduce using rule 46 (expression -> term .)
+    EOL             reduce using rule 46 (expression -> term .)
+    PARENTHESIS_CLOSE reduce using rule 46 (expression -> term .)
+
+
+state 29
+
+    (55) factor -> MINUS . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    factor                         shift and go to state 52
+
+state 30
+
+    (56) factor -> PLUS . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    factor                         shift and go to state 53
+
+state 31
+
+    (47) term -> factor . DIVISION term
+    (48) term -> factor . MULTIPLICATION term
+    (49) term -> factor .
+    DIVISION        shift and go to state 54
+    MULTIPLICATION  shift and go to state 55
+    MINUS           reduce using rule 49 (term -> factor .)
+    PLUS            reduce using rule 49 (term -> factor .)
+    LESSER_EQUAL    reduce using rule 49 (term -> factor .)
+    GREATER_EQUAL   reduce using rule 49 (term -> factor .)
+    LESSER          reduce using rule 49 (term -> factor .)
+    GREATER         reduce using rule 49 (term -> factor .)
+    NOT_EQUAL       reduce using rule 49 (term -> factor .)
+    EQUAL           reduce using rule 49 (term -> factor .)
+    AND             reduce using rule 49 (term -> factor .)
+    OR              reduce using rule 49 (term -> factor .)
+    EOL             reduce using rule 49 (term -> factor .)
+    PARENTHESIS_CLOSE reduce using rule 49 (term -> factor .)
+
+
+state 32
+
+    (50) factor -> FALSE .
+    DIVISION        reduce using rule 50 (factor -> FALSE .)
+    MULTIPLICATION  reduce using rule 50 (factor -> FALSE .)
+    MINUS           reduce using rule 50 (factor -> FALSE .)
+    PLUS            reduce using rule 50 (factor -> FALSE .)
+    LESSER_EQUAL    reduce using rule 50 (factor -> FALSE .)
+    GREATER_EQUAL   reduce using rule 50 (factor -> FALSE .)
+    LESSER          reduce using rule 50 (factor -> FALSE .)
+    GREATER         reduce using rule 50 (factor -> FALSE .)
+    NOT_EQUAL       reduce using rule 50 (factor -> FALSE .)
+    EQUAL           reduce using rule 50 (factor -> FALSE .)
+    AND             reduce using rule 50 (factor -> FALSE .)
+    OR              reduce using rule 50 (factor -> FALSE .)
+    EOL             reduce using rule 50 (factor -> FALSE .)
+    PARENTHESIS_CLOSE reduce using rule 50 (factor -> FALSE .)
+
+
+state 33
+
+    (51) factor -> TRUE .
+    DIVISION        reduce using rule 51 (factor -> TRUE .)
+    MULTIPLICATION  reduce using rule 51 (factor -> TRUE .)
+    MINUS           reduce using rule 51 (factor -> TRUE .)
+    PLUS            reduce using rule 51 (factor -> TRUE .)
+    LESSER_EQUAL    reduce using rule 51 (factor -> TRUE .)
+    GREATER_EQUAL   reduce using rule 51 (factor -> TRUE .)
+    LESSER          reduce using rule 51 (factor -> TRUE .)
+    GREATER         reduce using rule 51 (factor -> TRUE .)
+    NOT_EQUAL       reduce using rule 51 (factor -> TRUE .)
+    EQUAL           reduce using rule 51 (factor -> TRUE .)
+    AND             reduce using rule 51 (factor -> TRUE .)
+    OR              reduce using rule 51 (factor -> TRUE .)
+    EOL             reduce using rule 51 (factor -> TRUE .)
+    PARENTHESIS_CLOSE reduce using rule 51 (factor -> TRUE .)
+
+
+state 34
+
+    (52) factor -> STRING .
+    DIVISION        reduce using rule 52 (factor -> STRING .)
+    MULTIPLICATION  reduce using rule 52 (factor -> STRING .)
+    MINUS           reduce using rule 52 (factor -> STRING .)
+    PLUS            reduce using rule 52 (factor -> STRING .)
+    LESSER_EQUAL    reduce using rule 52 (factor -> STRING .)
+    GREATER_EQUAL   reduce using rule 52 (factor -> STRING .)
+    LESSER          reduce using rule 52 (factor -> STRING .)
+    GREATER         reduce using rule 52 (factor -> STRING .)
+    NOT_EQUAL       reduce using rule 52 (factor -> STRING .)
+    EQUAL           reduce using rule 52 (factor -> STRING .)
+    AND             reduce using rule 52 (factor -> STRING .)
+    OR              reduce using rule 52 (factor -> STRING .)
+    EOL             reduce using rule 52 (factor -> STRING .)
+    PARENTHESIS_CLOSE reduce using rule 52 (factor -> STRING .)
+
+
+state 35
+
+    (54) factor -> PARENTHESIS_OPEN . or_expression PARENTHESIS_CLOSE
+    (32) or_expression -> . and_expression OR or_expression
+    (33) or_expression -> . and_expression
+    (34) and_expression -> . equal_expression AND and_expression
+    (35) and_expression -> . equal_expression
+    (36) equal_expression -> . relative_expression NOT_EQUAL equal_expression
+    (37) equal_expression -> . relative_expression EQUAL equal_expression
+    (38) equal_expression -> . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    or_expression                  shift and go to state 56
+    and_expression                 shift and go to state 24
+    equal_expression               shift and go to state 25
+    relative_expression            shift and go to state 26
+    expression                     shift and go to state 27
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 36
+
+    (57) factor -> NUMBER .
+    DIVISION        reduce using rule 57 (factor -> NUMBER .)
+    MULTIPLICATION  reduce using rule 57 (factor -> NUMBER .)
+    MINUS           reduce using rule 57 (factor -> NUMBER .)
+    PLUS            reduce using rule 57 (factor -> NUMBER .)
+    LESSER_EQUAL    reduce using rule 57 (factor -> NUMBER .)
+    GREATER_EQUAL   reduce using rule 57 (factor -> NUMBER .)
+    LESSER          reduce using rule 57 (factor -> NUMBER .)
+    GREATER         reduce using rule 57 (factor -> NUMBER .)
+    NOT_EQUAL       reduce using rule 57 (factor -> NUMBER .)
+    EQUAL           reduce using rule 57 (factor -> NUMBER .)
+    AND             reduce using rule 57 (factor -> NUMBER .)
+    OR              reduce using rule 57 (factor -> NUMBER .)
+    EOL             reduce using rule 57 (factor -> NUMBER .)
+    PARENTHESIS_CLOSE reduce using rule 57 (factor -> NUMBER .)
+
+
+state 37
+
+    (10) command -> VAR IDENTIFIER ARROW . BOOL_TYPE ASSIGNMENT or_expression EOL
+    (11) command -> VAR IDENTIFIER ARROW . BOOL_TYPE EOL
+    (12) command -> VAR IDENTIFIER ARROW . STRING_TYPE ASSIGNMENT or_expression EOL
+    (13) command -> VAR IDENTIFIER ARROW . STRING_TYPE EOL
+    (14) command -> VAR IDENTIFIER ARROW . INT ASSIGNMENT or_expression EOL
+    (15) command -> VAR IDENTIFIER ARROW . INT EOL
+    BOOL_TYPE       shift and go to state 57
+    STRING_TYPE     shift and go to state 58
+    INT             shift and go to state 59
+
+
+state 38
+
+    (16) command -> IF PARENTHESIS_OPEN or_expression . PARENTHESIS_CLOSE command EOL
+    (17) command -> IF PARENTHESIS_OPEN or_expression . PARENTHESIS_CLOSE command ELSE command EOL
+    (18) command -> IF PARENTHESIS_OPEN or_expression . PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL
+    PARENTHESIS_CLOSE shift and go to state 60
+
+
+state 39
+
+    (29) command -> WHILE PARENTHESIS_OPEN or_expression . PARENTHESIS_CLOSE command
+    PARENTHESIS_CLOSE shift and go to state 61
+
+
+state 40
+
+    (30) command -> PRINT PARENTHESIS_OPEN or_expression . PARENTHESIS_CLOSE EOL
+    PARENTHESIS_CLOSE shift and go to state 62
+
+
+state 41
+
+    (9) command -> IDENTIFIER ASSIGNMENT or_expression EOL .
+    IDENTIFIER      reduce using rule 9 (command -> IDENTIFIER ASSIGNMENT or_expression EOL .)
+    VAR             reduce using rule 9 (command -> IDENTIFIER ASSIGNMENT or_expression EOL .)
+    IF              reduce using rule 9 (command -> IDENTIFIER ASSIGNMENT or_expression EOL .)
+    WHILE           reduce using rule 9 (command -> IDENTIFIER ASSIGNMENT or_expression EOL .)
+    PRINT           reduce using rule 9 (command -> IDENTIFIER ASSIGNMENT or_expression EOL .)
+    EOL             reduce using rule 9 (command -> IDENTIFIER ASSIGNMENT or_expression EOL .)
+    BLOCK_START     reduce using rule 9 (command -> IDENTIFIER ASSIGNMENT or_expression EOL .)
+    BLOCK_END       reduce using rule 9 (command -> IDENTIFIER ASSIGNMENT or_expression EOL .)
+    ELSE            reduce using rule 9 (command -> IDENTIFIER ASSIGNMENT or_expression EOL .)
+    ELIF            reduce using rule 9 (command -> IDENTIFIER ASSIGNMENT or_expression EOL .)
+
+
+state 42
+
+    (32) or_expression -> and_expression OR . or_expression
+    (32) or_expression -> . and_expression OR or_expression
+    (33) or_expression -> . and_expression
+    (34) and_expression -> . equal_expression AND and_expression
+    (35) and_expression -> . equal_expression
+    (36) equal_expression -> . relative_expression NOT_EQUAL equal_expression
+    (37) equal_expression -> . relative_expression EQUAL equal_expression
+    (38) equal_expression -> . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    and_expression                 shift and go to state 24
+    or_expression                  shift and go to state 63
+    equal_expression               shift and go to state 25
+    relative_expression            shift and go to state 26
+    expression                     shift and go to state 27
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 43
+
+    (34) and_expression -> equal_expression AND . and_expression
+    (34) and_expression -> . equal_expression AND and_expression
+    (35) and_expression -> . equal_expression
+    (36) equal_expression -> . relative_expression NOT_EQUAL equal_expression
+    (37) equal_expression -> . relative_expression EQUAL equal_expression
+    (38) equal_expression -> . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    equal_expression               shift and go to state 25
+    and_expression                 shift and go to state 64
+    relative_expression            shift and go to state 26
+    expression                     shift and go to state 27
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 44
+
+    (36) equal_expression -> relative_expression NOT_EQUAL . equal_expression
+    (36) equal_expression -> . relative_expression NOT_EQUAL equal_expression
+    (37) equal_expression -> . relative_expression EQUAL equal_expression
+    (38) equal_expression -> . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    relative_expression            shift and go to state 26
+    equal_expression               shift and go to state 65
+    expression                     shift and go to state 27
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 45
+
+    (37) equal_expression -> relative_expression EQUAL . equal_expression
+    (36) equal_expression -> . relative_expression NOT_EQUAL equal_expression
+    (37) equal_expression -> . relative_expression EQUAL equal_expression
+    (38) equal_expression -> . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    relative_expression            shift and go to state 26
+    equal_expression               shift and go to state 66
+    expression                     shift and go to state 27
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 46
+
+    (39) relative_expression -> expression LESSER_EQUAL . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    expression                     shift and go to state 27
+    relative_expression            shift and go to state 67
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 47
+
+    (40) relative_expression -> expression GREATER_EQUAL . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    expression                     shift and go to state 27
+    relative_expression            shift and go to state 68
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 48
+
+    (41) relative_expression -> expression LESSER . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    expression                     shift and go to state 27
+    relative_expression            shift and go to state 69
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 49
+
+    (42) relative_expression -> expression GREATER . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    expression                     shift and go to state 27
+    relative_expression            shift and go to state 70
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 50
+
+    (44) expression -> term MINUS . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    term                           shift and go to state 28
+    expression                     shift and go to state 71
+    factor                         shift and go to state 31
+
+state 51
+
+    (45) expression -> term PLUS . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    term                           shift and go to state 28
+    expression                     shift and go to state 72
+    factor                         shift and go to state 31
+
+state 52
+
+    (55) factor -> MINUS factor .
+    DIVISION        reduce using rule 55 (factor -> MINUS factor .)
+    MULTIPLICATION  reduce using rule 55 (factor -> MINUS factor .)
+    MINUS           reduce using rule 55 (factor -> MINUS factor .)
+    PLUS            reduce using rule 55 (factor -> MINUS factor .)
+    LESSER_EQUAL    reduce using rule 55 (factor -> MINUS factor .)
+    GREATER_EQUAL   reduce using rule 55 (factor -> MINUS factor .)
+    LESSER          reduce using rule 55 (factor -> MINUS factor .)
+    GREATER         reduce using rule 55 (factor -> MINUS factor .)
+    NOT_EQUAL       reduce using rule 55 (factor -> MINUS factor .)
+    EQUAL           reduce using rule 55 (factor -> MINUS factor .)
+    AND             reduce using rule 55 (factor -> MINUS factor .)
+    OR              reduce using rule 55 (factor -> MINUS factor .)
+    EOL             reduce using rule 55 (factor -> MINUS factor .)
+    PARENTHESIS_CLOSE reduce using rule 55 (factor -> MINUS factor .)
+
+
+state 53
+
+    (56) factor -> PLUS factor .
+    DIVISION        reduce using rule 56 (factor -> PLUS factor .)
+    MULTIPLICATION  reduce using rule 56 (factor -> PLUS factor .)
+    MINUS           reduce using rule 56 (factor -> PLUS factor .)
+    PLUS            reduce using rule 56 (factor -> PLUS factor .)
+    LESSER_EQUAL    reduce using rule 56 (factor -> PLUS factor .)
+    GREATER_EQUAL   reduce using rule 56 (factor -> PLUS factor .)
+    LESSER          reduce using rule 56 (factor -> PLUS factor .)
+    GREATER         reduce using rule 56 (factor -> PLUS factor .)
+    NOT_EQUAL       reduce using rule 56 (factor -> PLUS factor .)
+    EQUAL           reduce using rule 56 (factor -> PLUS factor .)
+    AND             reduce using rule 56 (factor -> PLUS factor .)
+    OR              reduce using rule 56 (factor -> PLUS factor .)
+    EOL             reduce using rule 56 (factor -> PLUS factor .)
+    PARENTHESIS_CLOSE reduce using rule 56 (factor -> PLUS factor .)
+
+
+state 54
+
+    (47) term -> factor DIVISION . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    factor                         shift and go to state 31
+    term                           shift and go to state 73
+
+state 55
+
+    (48) term -> factor MULTIPLICATION . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    factor                         shift and go to state 31
+    term                           shift and go to state 74
+
+state 56
+
+    (54) factor -> PARENTHESIS_OPEN or_expression . PARENTHESIS_CLOSE
+    PARENTHESIS_CLOSE shift and go to state 75
+
+
+state 57
+
+    (10) command -> VAR IDENTIFIER ARROW BOOL_TYPE . ASSIGNMENT or_expression EOL
+    (11) command -> VAR IDENTIFIER ARROW BOOL_TYPE . EOL
+    ASSIGNMENT      shift and go to state 76
+    EOL             shift and go to state 77
+
+
+state 58
+
+    (12) command -> VAR IDENTIFIER ARROW STRING_TYPE . ASSIGNMENT or_expression EOL
+    (13) command -> VAR IDENTIFIER ARROW STRING_TYPE . EOL
+    ASSIGNMENT      shift and go to state 78
+    EOL             shift and go to state 79
+
+
+state 59
+
+    (14) command -> VAR IDENTIFIER ARROW INT . ASSIGNMENT or_expression EOL
+    (15) command -> VAR IDENTIFIER ARROW INT . EOL
+    ASSIGNMENT      shift and go to state 80
+    EOL             shift and go to state 81
+
+
+state 60
+
+    (16) command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE . command EOL
+    (17) command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE . command ELSE command EOL
+    (18) command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE . command _2_repeat _3_repeat EOL
+    (8) command -> . block
+    (9) command -> . IDENTIFIER ASSIGNMENT or_expression EOL
+    (10) command -> . VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL
+    (11) command -> . VAR IDENTIFIER ARROW BOOL_TYPE EOL
+    (12) command -> . VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL
+    (13) command -> . VAR IDENTIFIER ARROW STRING_TYPE EOL
+    (14) command -> . VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL
+    (15) command -> . VAR IDENTIFIER ARROW INT EOL
+    (16) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL
+    (17) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL
+    (18) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL
+    (29) command -> . WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command
+    (30) command -> . PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL
+    (31) command -> . EOL
+    (1) block -> . BLOCK_START BLOCK_END
+    (2) block -> . BLOCK_START _1_repeat BLOCK_END
+    IDENTIFIER      shift and go to state 9
+    VAR             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+    EOL             shift and go to state 10
+    BLOCK_START     shift and go to state 2
+
+    command                        shift and go to state 82
+    block                          shift and go to state 8
+
+state 61
+
+    (29) command -> WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE . command
+    (8) command -> . block
+    (9) command -> . IDENTIFIER ASSIGNMENT or_expression EOL
+    (10) command -> . VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL
+    (11) command -> . VAR IDENTIFIER ARROW BOOL_TYPE EOL
+    (12) command -> . VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL
+    (13) command -> . VAR IDENTIFIER ARROW STRING_TYPE EOL
+    (14) command -> . VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL
+    (15) command -> . VAR IDENTIFIER ARROW INT EOL
+    (16) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL
+    (17) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL
+    (18) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL
+    (29) command -> . WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command
+    (30) command -> . PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL
+    (31) command -> . EOL
+    (1) block -> . BLOCK_START BLOCK_END
+    (2) block -> . BLOCK_START _1_repeat BLOCK_END
+    IDENTIFIER      shift and go to state 9
+    VAR             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+    EOL             shift and go to state 10
+    BLOCK_START     shift and go to state 2
+
+    command                        shift and go to state 83
+    block                          shift and go to state 8
+
+state 62
+
+    (30) command -> PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE . EOL
+    EOL             shift and go to state 84
+
+
+state 63
+
+    (32) or_expression -> and_expression OR or_expression .
+    EOL             reduce using rule 32 (or_expression -> and_expression OR or_expression .)
+    PARENTHESIS_CLOSE reduce using rule 32 (or_expression -> and_expression OR or_expression .)
+
+
+state 64
+
+    (34) and_expression -> equal_expression AND and_expression .
+    OR              reduce using rule 34 (and_expression -> equal_expression AND and_expression .)
+    EOL             reduce using rule 34 (and_expression -> equal_expression AND and_expression .)
+    PARENTHESIS_CLOSE reduce using rule 34 (and_expression -> equal_expression AND and_expression .)
+
+
+state 65
+
+    (36) equal_expression -> relative_expression NOT_EQUAL equal_expression .
+    AND             reduce using rule 36 (equal_expression -> relative_expression NOT_EQUAL equal_expression .)
+    OR              reduce using rule 36 (equal_expression -> relative_expression NOT_EQUAL equal_expression .)
+    EOL             reduce using rule 36 (equal_expression -> relative_expression NOT_EQUAL equal_expression .)
+    PARENTHESIS_CLOSE reduce using rule 36 (equal_expression -> relative_expression NOT_EQUAL equal_expression .)
+
+
+state 66
+
+    (37) equal_expression -> relative_expression EQUAL equal_expression .
+    AND             reduce using rule 37 (equal_expression -> relative_expression EQUAL equal_expression .)
+    OR              reduce using rule 37 (equal_expression -> relative_expression EQUAL equal_expression .)
+    EOL             reduce using rule 37 (equal_expression -> relative_expression EQUAL equal_expression .)
+    PARENTHESIS_CLOSE reduce using rule 37 (equal_expression -> relative_expression EQUAL equal_expression .)
+
+
+state 67
+
+    (39) relative_expression -> expression LESSER_EQUAL relative_expression .
+    NOT_EQUAL       reduce using rule 39 (relative_expression -> expression LESSER_EQUAL relative_expression .)
+    EQUAL           reduce using rule 39 (relative_expression -> expression LESSER_EQUAL relative_expression .)
+    AND             reduce using rule 39 (relative_expression -> expression LESSER_EQUAL relative_expression .)
+    OR              reduce using rule 39 (relative_expression -> expression LESSER_EQUAL relative_expression .)
+    EOL             reduce using rule 39 (relative_expression -> expression LESSER_EQUAL relative_expression .)
+    PARENTHESIS_CLOSE reduce using rule 39 (relative_expression -> expression LESSER_EQUAL relative_expression .)
+
+
+state 68
+
+    (40) relative_expression -> expression GREATER_EQUAL relative_expression .
+    NOT_EQUAL       reduce using rule 40 (relative_expression -> expression GREATER_EQUAL relative_expression .)
+    EQUAL           reduce using rule 40 (relative_expression -> expression GREATER_EQUAL relative_expression .)
+    AND             reduce using rule 40 (relative_expression -> expression GREATER_EQUAL relative_expression .)
+    OR              reduce using rule 40 (relative_expression -> expression GREATER_EQUAL relative_expression .)
+    EOL             reduce using rule 40 (relative_expression -> expression GREATER_EQUAL relative_expression .)
+    PARENTHESIS_CLOSE reduce using rule 40 (relative_expression -> expression GREATER_EQUAL relative_expression .)
+
+
+state 69
+
+    (41) relative_expression -> expression LESSER relative_expression .
+    NOT_EQUAL       reduce using rule 41 (relative_expression -> expression LESSER relative_expression .)
+    EQUAL           reduce using rule 41 (relative_expression -> expression LESSER relative_expression .)
+    AND             reduce using rule 41 (relative_expression -> expression LESSER relative_expression .)
+    OR              reduce using rule 41 (relative_expression -> expression LESSER relative_expression .)
+    EOL             reduce using rule 41 (relative_expression -> expression LESSER relative_expression .)
+    PARENTHESIS_CLOSE reduce using rule 41 (relative_expression -> expression LESSER relative_expression .)
+
+
+state 70
+
+    (42) relative_expression -> expression GREATER relative_expression .
+    NOT_EQUAL       reduce using rule 42 (relative_expression -> expression GREATER relative_expression .)
+    EQUAL           reduce using rule 42 (relative_expression -> expression GREATER relative_expression .)
+    AND             reduce using rule 42 (relative_expression -> expression GREATER relative_expression .)
+    OR              reduce using rule 42 (relative_expression -> expression GREATER relative_expression .)
+    EOL             reduce using rule 42 (relative_expression -> expression GREATER relative_expression .)
+    PARENTHESIS_CLOSE reduce using rule 42 (relative_expression -> expression GREATER relative_expression .)
+
+
+state 71
+
+    (44) expression -> term MINUS expression .
+    LESSER_EQUAL    reduce using rule 44 (expression -> term MINUS expression .)
+    GREATER_EQUAL   reduce using rule 44 (expression -> term MINUS expression .)
+    LESSER          reduce using rule 44 (expression -> term MINUS expression .)
+    GREATER         reduce using rule 44 (expression -> term MINUS expression .)
+    NOT_EQUAL       reduce using rule 44 (expression -> term MINUS expression .)
+    EQUAL           reduce using rule 44 (expression -> term MINUS expression .)
+    AND             reduce using rule 44 (expression -> term MINUS expression .)
+    OR              reduce using rule 44 (expression -> term MINUS expression .)
+    EOL             reduce using rule 44 (expression -> term MINUS expression .)
+    PARENTHESIS_CLOSE reduce using rule 44 (expression -> term MINUS expression .)
+
+
+state 72
+
+    (45) expression -> term PLUS expression .
+    LESSER_EQUAL    reduce using rule 45 (expression -> term PLUS expression .)
+    GREATER_EQUAL   reduce using rule 45 (expression -> term PLUS expression .)
+    LESSER          reduce using rule 45 (expression -> term PLUS expression .)
+    GREATER         reduce using rule 45 (expression -> term PLUS expression .)
+    NOT_EQUAL       reduce using rule 45 (expression -> term PLUS expression .)
+    EQUAL           reduce using rule 45 (expression -> term PLUS expression .)
+    AND             reduce using rule 45 (expression -> term PLUS expression .)
+    OR              reduce using rule 45 (expression -> term PLUS expression .)
+    EOL             reduce using rule 45 (expression -> term PLUS expression .)
+    PARENTHESIS_CLOSE reduce using rule 45 (expression -> term PLUS expression .)
+
+
+state 73
+
+    (47) term -> factor DIVISION term .
+    MINUS           reduce using rule 47 (term -> factor DIVISION term .)
+    PLUS            reduce using rule 47 (term -> factor DIVISION term .)
+    LESSER_EQUAL    reduce using rule 47 (term -> factor DIVISION term .)
+    GREATER_EQUAL   reduce using rule 47 (term -> factor DIVISION term .)
+    LESSER          reduce using rule 47 (term -> factor DIVISION term .)
+    GREATER         reduce using rule 47 (term -> factor DIVISION term .)
+    NOT_EQUAL       reduce using rule 47 (term -> factor DIVISION term .)
+    EQUAL           reduce using rule 47 (term -> factor DIVISION term .)
+    AND             reduce using rule 47 (term -> factor DIVISION term .)
+    OR              reduce using rule 47 (term -> factor DIVISION term .)
+    EOL             reduce using rule 47 (term -> factor DIVISION term .)
+    PARENTHESIS_CLOSE reduce using rule 47 (term -> factor DIVISION term .)
+
+
+state 74
+
+    (48) term -> factor MULTIPLICATION term .
+    MINUS           reduce using rule 48 (term -> factor MULTIPLICATION term .)
+    PLUS            reduce using rule 48 (term -> factor MULTIPLICATION term .)
+    LESSER_EQUAL    reduce using rule 48 (term -> factor MULTIPLICATION term .)
+    GREATER_EQUAL   reduce using rule 48 (term -> factor MULTIPLICATION term .)
+    LESSER          reduce using rule 48 (term -> factor MULTIPLICATION term .)
+    GREATER         reduce using rule 48 (term -> factor MULTIPLICATION term .)
+    NOT_EQUAL       reduce using rule 48 (term -> factor MULTIPLICATION term .)
+    EQUAL           reduce using rule 48 (term -> factor MULTIPLICATION term .)
+    AND             reduce using rule 48 (term -> factor MULTIPLICATION term .)
+    OR              reduce using rule 48 (term -> factor MULTIPLICATION term .)
+    EOL             reduce using rule 48 (term -> factor MULTIPLICATION term .)
+    PARENTHESIS_CLOSE reduce using rule 48 (term -> factor MULTIPLICATION term .)
+
+
+state 75
+
+    (54) factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .
+    DIVISION        reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+    MULTIPLICATION  reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+    MINUS           reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+    PLUS            reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+    LESSER_EQUAL    reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+    GREATER_EQUAL   reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+    LESSER          reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+    GREATER         reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+    NOT_EQUAL       reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+    EQUAL           reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+    AND             reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+    OR              reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+    EOL             reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+    PARENTHESIS_CLOSE reduce using rule 54 (factor -> PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE .)
+
+
+state 76
+
+    (10) command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT . or_expression EOL
+    (32) or_expression -> . and_expression OR or_expression
+    (33) or_expression -> . and_expression
+    (34) and_expression -> . equal_expression AND and_expression
+    (35) and_expression -> . equal_expression
+    (36) equal_expression -> . relative_expression NOT_EQUAL equal_expression
+    (37) equal_expression -> . relative_expression EQUAL equal_expression
+    (38) equal_expression -> . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    or_expression                  shift and go to state 85
+    and_expression                 shift and go to state 24
+    equal_expression               shift and go to state 25
+    relative_expression            shift and go to state 26
+    expression                     shift and go to state 27
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 77
+
+    (11) command -> VAR IDENTIFIER ARROW BOOL_TYPE EOL .
+    IDENTIFIER      reduce using rule 11 (command -> VAR IDENTIFIER ARROW BOOL_TYPE EOL .)
+    VAR             reduce using rule 11 (command -> VAR IDENTIFIER ARROW BOOL_TYPE EOL .)
+    IF              reduce using rule 11 (command -> VAR IDENTIFIER ARROW BOOL_TYPE EOL .)
+    WHILE           reduce using rule 11 (command -> VAR IDENTIFIER ARROW BOOL_TYPE EOL .)
+    PRINT           reduce using rule 11 (command -> VAR IDENTIFIER ARROW BOOL_TYPE EOL .)
+    EOL             reduce using rule 11 (command -> VAR IDENTIFIER ARROW BOOL_TYPE EOL .)
+    BLOCK_START     reduce using rule 11 (command -> VAR IDENTIFIER ARROW BOOL_TYPE EOL .)
+    BLOCK_END       reduce using rule 11 (command -> VAR IDENTIFIER ARROW BOOL_TYPE EOL .)
+    ELSE            reduce using rule 11 (command -> VAR IDENTIFIER ARROW BOOL_TYPE EOL .)
+    ELIF            reduce using rule 11 (command -> VAR IDENTIFIER ARROW BOOL_TYPE EOL .)
+
+
+state 78
+
+    (12) command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT . or_expression EOL
+    (32) or_expression -> . and_expression OR or_expression
+    (33) or_expression -> . and_expression
+    (34) and_expression -> . equal_expression AND and_expression
+    (35) and_expression -> . equal_expression
+    (36) equal_expression -> . relative_expression NOT_EQUAL equal_expression
+    (37) equal_expression -> . relative_expression EQUAL equal_expression
+    (38) equal_expression -> . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    or_expression                  shift and go to state 86
+    and_expression                 shift and go to state 24
+    equal_expression               shift and go to state 25
+    relative_expression            shift and go to state 26
+    expression                     shift and go to state 27
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 79
+
+    (13) command -> VAR IDENTIFIER ARROW STRING_TYPE EOL .
+    IDENTIFIER      reduce using rule 13 (command -> VAR IDENTIFIER ARROW STRING_TYPE EOL .)
+    VAR             reduce using rule 13 (command -> VAR IDENTIFIER ARROW STRING_TYPE EOL .)
+    IF              reduce using rule 13 (command -> VAR IDENTIFIER ARROW STRING_TYPE EOL .)
+    WHILE           reduce using rule 13 (command -> VAR IDENTIFIER ARROW STRING_TYPE EOL .)
+    PRINT           reduce using rule 13 (command -> VAR IDENTIFIER ARROW STRING_TYPE EOL .)
+    EOL             reduce using rule 13 (command -> VAR IDENTIFIER ARROW STRING_TYPE EOL .)
+    BLOCK_START     reduce using rule 13 (command -> VAR IDENTIFIER ARROW STRING_TYPE EOL .)
+    BLOCK_END       reduce using rule 13 (command -> VAR IDENTIFIER ARROW STRING_TYPE EOL .)
+    ELSE            reduce using rule 13 (command -> VAR IDENTIFIER ARROW STRING_TYPE EOL .)
+    ELIF            reduce using rule 13 (command -> VAR IDENTIFIER ARROW STRING_TYPE EOL .)
+
+
+state 80
+
+    (14) command -> VAR IDENTIFIER ARROW INT ASSIGNMENT . or_expression EOL
+    (32) or_expression -> . and_expression OR or_expression
+    (33) or_expression -> . and_expression
+    (34) and_expression -> . equal_expression AND and_expression
+    (35) and_expression -> . equal_expression
+    (36) equal_expression -> . relative_expression NOT_EQUAL equal_expression
+    (37) equal_expression -> . relative_expression EQUAL equal_expression
+    (38) equal_expression -> . relative_expression
+    (39) relative_expression -> . expression LESSER_EQUAL relative_expression
+    (40) relative_expression -> . expression GREATER_EQUAL relative_expression
+    (41) relative_expression -> . expression LESSER relative_expression
+    (42) relative_expression -> . expression GREATER relative_expression
+    (43) relative_expression -> . expression
+    (44) expression -> . term MINUS expression
+    (45) expression -> . term PLUS expression
+    (46) expression -> . term
+    (47) term -> . factor DIVISION term
+    (48) term -> . factor MULTIPLICATION term
+    (49) term -> . factor
+    (50) factor -> . FALSE
+    (51) factor -> . TRUE
+    (52) factor -> . STRING
+    (53) factor -> . IDENTIFIER
+    (54) factor -> . PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE
+    (55) factor -> . MINUS factor
+    (56) factor -> . PLUS factor
+    (57) factor -> . NUMBER
+    FALSE           shift and go to state 32
+    TRUE            shift and go to state 33
+    STRING          shift and go to state 34
+    IDENTIFIER      shift and go to state 22
+    PARENTHESIS_OPEN shift and go to state 35
+    MINUS           shift and go to state 29
+    PLUS            shift and go to state 30
+    NUMBER          shift and go to state 36
+
+    or_expression                  shift and go to state 87
+    and_expression                 shift and go to state 24
+    equal_expression               shift and go to state 25
+    relative_expression            shift and go to state 26
+    expression                     shift and go to state 27
+    term                           shift and go to state 28
+    factor                         shift and go to state 31
+
+state 81
+
+    (15) command -> VAR IDENTIFIER ARROW INT EOL .
+    IDENTIFIER      reduce using rule 15 (command -> VAR IDENTIFIER ARROW INT EOL .)
+    VAR             reduce using rule 15 (command -> VAR IDENTIFIER ARROW INT EOL .)
+    IF              reduce using rule 15 (command -> VAR IDENTIFIER ARROW INT EOL .)
+    WHILE           reduce using rule 15 (command -> VAR IDENTIFIER ARROW INT EOL .)
+    PRINT           reduce using rule 15 (command -> VAR IDENTIFIER ARROW INT EOL .)
+    EOL             reduce using rule 15 (command -> VAR IDENTIFIER ARROW INT EOL .)
+    BLOCK_START     reduce using rule 15 (command -> VAR IDENTIFIER ARROW INT EOL .)
+    BLOCK_END       reduce using rule 15 (command -> VAR IDENTIFIER ARROW INT EOL .)
+    ELSE            reduce using rule 15 (command -> VAR IDENTIFIER ARROW INT EOL .)
+    ELIF            reduce using rule 15 (command -> VAR IDENTIFIER ARROW INT EOL .)
+
+
+state 82
+
+    (16) command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command . EOL
+    (17) command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command . ELSE command EOL
+    (18) command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command . _2_repeat _3_repeat EOL
+    (19) _2_repeat -> . _2_items
+    (20) _2_repeat -> .
+    (21) _2_items -> . _2_items _2_item
+    (22) _2_items -> . _2_item
+    (23) _2_item -> . ELIF command
+  ! shift/reduce conflict for ELSE resolved as shift
+  ! shift/reduce conflict for EOL resolved as shift
+    EOL             shift and go to state 88
+    ELSE            shift and go to state 89
+    ELIF            shift and go to state 93
+
+    _2_repeat                      shift and go to state 90
+    _2_items                       shift and go to state 91
+    _2_item                        shift and go to state 92
+
+state 83
+
+    (29) command -> WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command .
+    IDENTIFIER      reduce using rule 29 (command -> WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command .)
+    VAR             reduce using rule 29 (command -> WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command .)
+    IF              reduce using rule 29 (command -> WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command .)
+    WHILE           reduce using rule 29 (command -> WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command .)
+    PRINT           reduce using rule 29 (command -> WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command .)
+    EOL             reduce using rule 29 (command -> WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command .)
+    BLOCK_START     reduce using rule 29 (command -> WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command .)
+    BLOCK_END       reduce using rule 29 (command -> WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command .)
+    ELSE            reduce using rule 29 (command -> WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command .)
+    ELIF            reduce using rule 29 (command -> WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command .)
+
+
+state 84
+
+    (30) command -> PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL .
+    IDENTIFIER      reduce using rule 30 (command -> PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL .)
+    VAR             reduce using rule 30 (command -> PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL .)
+    IF              reduce using rule 30 (command -> PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL .)
+    WHILE           reduce using rule 30 (command -> PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL .)
+    PRINT           reduce using rule 30 (command -> PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL .)
+    EOL             reduce using rule 30 (command -> PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL .)
+    BLOCK_START     reduce using rule 30 (command -> PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL .)
+    BLOCK_END       reduce using rule 30 (command -> PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL .)
+    ELSE            reduce using rule 30 (command -> PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL .)
+    ELIF            reduce using rule 30 (command -> PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL .)
+
+
+state 85
+
+    (10) command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression . EOL
+    EOL             shift and go to state 94
+
+
+state 86
+
+    (12) command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression . EOL
+    EOL             shift and go to state 95
+
+
+state 87
+
+    (14) command -> VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression . EOL
+    EOL             shift and go to state 96
+
+
+state 88
+
+    (16) command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL .
+    IDENTIFIER      reduce using rule 16 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL .)
+    VAR             reduce using rule 16 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL .)
+    IF              reduce using rule 16 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL .)
+    WHILE           reduce using rule 16 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL .)
+    PRINT           reduce using rule 16 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL .)
+    EOL             reduce using rule 16 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL .)
+    BLOCK_START     reduce using rule 16 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL .)
+    BLOCK_END       reduce using rule 16 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL .)
+    ELSE            reduce using rule 16 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL .)
+    ELIF            reduce using rule 16 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL .)
+
+
+state 89
+
+    (17) command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE . command EOL
+    (8) command -> . block
+    (9) command -> . IDENTIFIER ASSIGNMENT or_expression EOL
+    (10) command -> . VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL
+    (11) command -> . VAR IDENTIFIER ARROW BOOL_TYPE EOL
+    (12) command -> . VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL
+    (13) command -> . VAR IDENTIFIER ARROW STRING_TYPE EOL
+    (14) command -> . VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL
+    (15) command -> . VAR IDENTIFIER ARROW INT EOL
+    (16) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL
+    (17) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL
+    (18) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL
+    (29) command -> . WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command
+    (30) command -> . PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL
+    (31) command -> . EOL
+    (1) block -> . BLOCK_START BLOCK_END
+    (2) block -> . BLOCK_START _1_repeat BLOCK_END
+    IDENTIFIER      shift and go to state 9
+    VAR             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+    EOL             shift and go to state 10
+    BLOCK_START     shift and go to state 2
+
+    command                        shift and go to state 97
+    block                          shift and go to state 8
+
+state 90
+
+    (18) command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat . _3_repeat EOL
+    (24) _3_repeat -> . _3_items
+    (25) _3_repeat -> .
+    (26) _3_items -> . _3_items _3_item
+    (27) _3_items -> . _3_item
+    (28) _3_item -> . ELSE command
+    EOL             reduce using rule 25 (_3_repeat -> .)
+    ELSE            shift and go to state 101
+
+    _3_repeat                      shift and go to state 98
+    _3_items                       shift and go to state 99
+    _3_item                        shift and go to state 100
+
+state 91
+
+    (19) _2_repeat -> _2_items .
+    (21) _2_items -> _2_items . _2_item
+    (23) _2_item -> . ELIF command
+    ELSE            reduce using rule 19 (_2_repeat -> _2_items .)
+    EOL             reduce using rule 19 (_2_repeat -> _2_items .)
+    ELIF            shift and go to state 93
+
+    _2_item                        shift and go to state 102
+
+state 92
+
+    (22) _2_items -> _2_item .
+    ELIF            reduce using rule 22 (_2_items -> _2_item .)
+    ELSE            reduce using rule 22 (_2_items -> _2_item .)
+    EOL             reduce using rule 22 (_2_items -> _2_item .)
+
+
+state 93
+
+    (23) _2_item -> ELIF . command
+    (8) command -> . block
+    (9) command -> . IDENTIFIER ASSIGNMENT or_expression EOL
+    (10) command -> . VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL
+    (11) command -> . VAR IDENTIFIER ARROW BOOL_TYPE EOL
+    (12) command -> . VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL
+    (13) command -> . VAR IDENTIFIER ARROW STRING_TYPE EOL
+    (14) command -> . VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL
+    (15) command -> . VAR IDENTIFIER ARROW INT EOL
+    (16) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL
+    (17) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL
+    (18) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL
+    (29) command -> . WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command
+    (30) command -> . PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL
+    (31) command -> . EOL
+    (1) block -> . BLOCK_START BLOCK_END
+    (2) block -> . BLOCK_START _1_repeat BLOCK_END
+    IDENTIFIER      shift and go to state 9
+    VAR             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+    EOL             shift and go to state 10
+    BLOCK_START     shift and go to state 2
+
+    command                        shift and go to state 103
+    block                          shift and go to state 8
+
+state 94
+
+    (10) command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL .
+    IDENTIFIER      reduce using rule 10 (command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL .)
+    VAR             reduce using rule 10 (command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL .)
+    IF              reduce using rule 10 (command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL .)
+    WHILE           reduce using rule 10 (command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL .)
+    PRINT           reduce using rule 10 (command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL .)
+    EOL             reduce using rule 10 (command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL .)
+    BLOCK_START     reduce using rule 10 (command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL .)
+    BLOCK_END       reduce using rule 10 (command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL .)
+    ELSE            reduce using rule 10 (command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL .)
+    ELIF            reduce using rule 10 (command -> VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL .)
+
+
+state 95
+
+    (12) command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL .
+    IDENTIFIER      reduce using rule 12 (command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL .)
+    VAR             reduce using rule 12 (command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL .)
+    IF              reduce using rule 12 (command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL .)
+    WHILE           reduce using rule 12 (command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL .)
+    PRINT           reduce using rule 12 (command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL .)
+    EOL             reduce using rule 12 (command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL .)
+    BLOCK_START     reduce using rule 12 (command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL .)
+    BLOCK_END       reduce using rule 12 (command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL .)
+    ELSE            reduce using rule 12 (command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL .)
+    ELIF            reduce using rule 12 (command -> VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL .)
+
+
+state 96
+
+    (14) command -> VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL .
+    IDENTIFIER      reduce using rule 14 (command -> VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL .)
+    VAR             reduce using rule 14 (command -> VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL .)
+    IF              reduce using rule 14 (command -> VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL .)
+    WHILE           reduce using rule 14 (command -> VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL .)
+    PRINT           reduce using rule 14 (command -> VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL .)
+    EOL             reduce using rule 14 (command -> VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL .)
+    BLOCK_START     reduce using rule 14 (command -> VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL .)
+    BLOCK_END       reduce using rule 14 (command -> VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL .)
+    ELSE            reduce using rule 14 (command -> VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL .)
+    ELIF            reduce using rule 14 (command -> VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL .)
+
+
+state 97
+
+    (17) command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command . EOL
+    EOL             shift and go to state 104
+
+
+state 98
+
+    (18) command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat . EOL
+    EOL             shift and go to state 105
+
+
+state 99
+
+    (24) _3_repeat -> _3_items .
+    (26) _3_items -> _3_items . _3_item
+    (28) _3_item -> . ELSE command
+    EOL             reduce using rule 24 (_3_repeat -> _3_items .)
+    ELSE            shift and go to state 101
+
+    _3_item                        shift and go to state 106
+
+state 100
+
+    (27) _3_items -> _3_item .
+    ELSE            reduce using rule 27 (_3_items -> _3_item .)
+    EOL             reduce using rule 27 (_3_items -> _3_item .)
+
+
+state 101
+
+    (28) _3_item -> ELSE . command
+    (8) command -> . block
+    (9) command -> . IDENTIFIER ASSIGNMENT or_expression EOL
+    (10) command -> . VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL
+    (11) command -> . VAR IDENTIFIER ARROW BOOL_TYPE EOL
+    (12) command -> . VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL
+    (13) command -> . VAR IDENTIFIER ARROW STRING_TYPE EOL
+    (14) command -> . VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL
+    (15) command -> . VAR IDENTIFIER ARROW INT EOL
+    (16) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL
+    (17) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL
+    (18) command -> . IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL
+    (29) command -> . WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command
+    (30) command -> . PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL
+    (31) command -> . EOL
+    (1) block -> . BLOCK_START BLOCK_END
+    (2) block -> . BLOCK_START _1_repeat BLOCK_END
+    IDENTIFIER      shift and go to state 9
+    VAR             shift and go to state 11
+    IF              shift and go to state 12
+    WHILE           shift and go to state 13
+    PRINT           shift and go to state 14
+    EOL             shift and go to state 10
+    BLOCK_START     shift and go to state 2
+
+    command                        shift and go to state 107
+    block                          shift and go to state 8
+
+state 102
+
+    (21) _2_items -> _2_items _2_item .
+    ELIF            reduce using rule 21 (_2_items -> _2_items _2_item .)
+    ELSE            reduce using rule 21 (_2_items -> _2_items _2_item .)
+    EOL             reduce using rule 21 (_2_items -> _2_items _2_item .)
+
+
+state 103
+
+    (23) _2_item -> ELIF command .
+    ELIF            reduce using rule 23 (_2_item -> ELIF command .)
+    ELSE            reduce using rule 23 (_2_item -> ELIF command .)
+    EOL             reduce using rule 23 (_2_item -> ELIF command .)
+
+
+state 104
+
+    (17) command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL .
+    IDENTIFIER      reduce using rule 17 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL .)
+    VAR             reduce using rule 17 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL .)
+    IF              reduce using rule 17 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL .)
+    WHILE           reduce using rule 17 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL .)
+    PRINT           reduce using rule 17 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL .)
+    EOL             reduce using rule 17 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL .)
+    BLOCK_START     reduce using rule 17 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL .)
+    BLOCK_END       reduce using rule 17 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL .)
+    ELSE            reduce using rule 17 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL .)
+    ELIF            reduce using rule 17 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL .)
+
+
+state 105
+
+    (18) command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL .
+    IDENTIFIER      reduce using rule 18 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL .)
+    VAR             reduce using rule 18 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL .)
+    IF              reduce using rule 18 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL .)
+    WHILE           reduce using rule 18 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL .)
+    PRINT           reduce using rule 18 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL .)
+    EOL             reduce using rule 18 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL .)
+    BLOCK_START     reduce using rule 18 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL .)
+    BLOCK_END       reduce using rule 18 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL .)
+    ELSE            reduce using rule 18 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL .)
+    ELIF            reduce using rule 18 (command -> IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command _2_repeat _3_repeat EOL .)
+
+
+state 106
+
+    (26) _3_items -> _3_items _3_item .
+    ELSE            reduce using rule 26 (_3_items -> _3_items _3_item .)
+    EOL             reduce using rule 26 (_3_items -> _3_items _3_item .)
+
+
+state 107
+
+    (28) _3_item -> ELSE command .
+    ELSE            reduce using rule 28 (_3_item -> ELSE command .)
+    EOL             reduce using rule 28 (_3_item -> ELSE command .)
+
+
+Conflicts:
+
+shift/reduce conflict for BLOCK_END in state 2 resolved as shift
+shift/reduce conflict for ELSE in state 82 resolved as shift
+shift/reduce conflict for EOL in state 82 resolved as shift

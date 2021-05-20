@@ -1,6 +1,5 @@
 from src.Node import Node
 from src.Types.TokenTypes import TokenTypes 
-from src.Types.VariableTypes import VariableTypes
 from src.Token import Token
 from src.SymbolTable import SymbolTable
 
@@ -23,7 +22,8 @@ class BinOp(Node):
 
         super().__init__(
             value=value,
-            children=[child1, child2]
+            children=[child1, child2],
+            node_type='BinOp'
         )
         self.child_1 = child1
         self.child_2 = child2

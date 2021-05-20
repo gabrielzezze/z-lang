@@ -10,7 +10,7 @@ class UnOp(Node):
         if value.type not in UNARY_OPERATORS:
             raise ValueError('UnOp node recieved invalid value')
             
-        super().__init__(value=value, children=[child])
+        super().__init__(value=value, children=[child], node_type='UnOp')
         self.child = child
     
 

@@ -5,7 +5,8 @@ class Variable(Node):
     def __init__(self, value: str):
         super().__init__(
             value=value,
-            children=[]
+            children=[],
+            node_type='Variable'
         )
         self.value = value
 

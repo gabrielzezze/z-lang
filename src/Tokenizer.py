@@ -53,7 +53,7 @@ class ZTokenizer(Lexer):
 
 
     # Ignore new lines char #
-    ignore              = ' \t'
+    ignore              = ' \t,'
     ignore_newline      = r'\n+'
 
 

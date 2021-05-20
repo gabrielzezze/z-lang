@@ -1,3 +1,4 @@
+from src.Nodes.FuncOp import FuncOp
 from src.SymbolTable import SymbolTable
 from src.Token import Token
 from src.Types.TokenTypes import TokenTypes
@@ -15,6 +16,8 @@ from src.Nodes.Print import Print
 from src.Nodes.Block import Block
 from src.Nodes.IfElseOp import IfElseOp
 from src.Nodes.WhileOp import WhileOp
+from src.Nodes.FuncArgument import FuncArgument
+from src.Nodes.Return import ReturnStatement
 
 class ZParser(Parser):
     tokens = ZTokenizer.tokens
@@ -30,19 +33,66 @@ class ZParser(Parser):
     def __init__(self):
         self.names = {}
 
+    @_(
+        'FUNCTION IDENTIFIER PARENTHESIS_OPEN { argument } PARENTHESIS_CLOSE block EOL'
+    )
+    def function(self, p):
+        values = p._slice
+        node = NoOp()
+
+        if values[0].type == 'FUNCTION':
+            token = Token(token_type=TokenTypes.FUNCTION, value=values[0].value)
+            arguments = []
+            if len(values) > 6:
+                for arg in p.argument:
+                    arguments.append(arg)
+
+            node = FuncOp(value=token, child_block=p.block, arguments=arguments)
+        
+        return node
+
 
     @_(
+        'INT IDENTIFIER',
+        'STRING_TYPE IDENTIFIER',
+        'BOOL_TYPE IDENTIFIER'
+    )
+    def argument(self, p):
+        values = p._slice
+
+        node = NoOp()
+        token = None
+        if values[0].type == 'INT':
+            token = Token(token_type=TokenTypes.INT, value=values[1].value)
+
+        elif values[0].type == 'STRING_TYPE':
+            token = Token(token_type=TokenTypes.STRING_TYPE, value=values[1].value)
+        
+        elif values[0].type == 'BOOL_TYPE':
+            token = Token(token_type=TokenTypes.BOOL_TYPE, value=values[1].value)
+        
+        node = FuncArgument(value=token)
+
+        return node
+
+
+
+    @_(
+        'BLOCK_START BLOCK_END',
         'BLOCK_START { command } BLOCK_END',
-        'BLOCK_START BLOCK_END'
     )
     def block(self, p):
         values = p._slice
         node = NoOp()
-        if values[0].type == 'BLOCK_START':
+        if values[0].type == 'BLOCK_START' and len(values) > 2:
             node = Block()
             for cmd in p.command:
                 node.children.append(cmd)
         
+        elif values[0].type == 'BLOCK_START' and len(values) == 2:
+            node = Block()
+            node.children.append(NoOp())
+
         return node
 
     @_(
@@ -50,22 +100,29 @@ class ZParser(Parser):
         'PRINT PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE EOL',
         'WHILE PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command',
         
-       'IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command { ELIF command } { ELSE command } EOL',
-        'IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command ELSE command EOL',
+        'IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command elif_statement EOL',
         'IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL',
         
         'VAR IDENTIFIER ARROW INT EOL',
         'VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL',
+        'VAR IDENTIFIER ARROW INT ASSIGNMENT func_call EOL',
         
         'VAR IDENTIFIER ARROW STRING_TYPE EOL',
         'VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL',
+        'VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT func_call EOL',
         
         'VAR IDENTIFIER ARROW BOOL_TYPE EOL',
         'VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL',
+        'VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT func_call EOL',
         
         'IDENTIFIER ASSIGNMENT or_expression EOL',
+        'IDENTIFIER ASSIGNMENT func_call EOL',
 
-        'block'
+        'func_call',
+
+        'block',
+
+        'RETURN or_expression EOL'
     )
     def command(self, p):
         values = p._slice
@@ -91,7 +148,10 @@ class ZParser(Parser):
         elif type == 'VAR':
             expression = NoOp()
             if len(values) > 5:
-                expression = p.or_expression
+                if p.or_expression:
+                    expression = p.or_expression
+                else:
+                    expression = p.func_call
 
             type = TokenTypes.STRING_TYPE
             if values[3].type == 'INT':
@@ -102,14 +162,60 @@ class ZParser(Parser):
             node = Identifier(value=values[1].value, expression=expression, type=type)
         
         elif type == 'IDENTIFIER':
-            expression = NoOp()
+            if p.or_expression:
+                expression = p.or_expression
+            else:
+                expression = p.func_call
+                
             node = Identifier(value=values[0].value, expression=p.or_expression)
 
         elif type == 'block':
             node = p.block
+        
+        elif type == 'RETURN':
+            node = ReturnStatement(expression=p.or_expression)
 
         return node
 
+    @_(
+        'IDENTIFIER PARENTHESIS_OPEN { or_expression } PARENTHESIS_CLOSE EOL'
+    )
+    def func_call(self, p):
+        return NoOp()
+
+
+    @_(
+        'ELIF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command elif_statement',
+        'ELIF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command',
+        'else_statement'
+    )
+    def elif_statement(self, p):
+        values = p._slice
+
+        node = NoOp()
+        if values[0].type == "ELIF" and len(values) > 4:
+            node = IfElseOp(condition=p.or_expression, true_child=p.command, false_child=p.elif_statement)
+        
+        elif values[0].type == "ELIF" and len(values) == 4:
+            node = IfElseOp(condition=p.or_expression, true_child=p.command, false_child=None)
+
+        elif values[0].type == "else":
+            node = p.else_statement
+
+        return node
+
+
+    @_(
+        'ELSE command'
+    )
+    def else_statement(self, p):
+        values = p._slice
+        
+        node = NoOp()
+        if values[0].type == 'ELSE':
+            node = p.command
+        
+        return node
 
 
     @_(

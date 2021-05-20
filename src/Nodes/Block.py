@@ -5,7 +5,8 @@ class Block(Node):
     def __init__(self):
         super().__init__(
             value='',
-            children=[]
+            children=[],
+            node_type='Block'
         )
         self.children = []
     

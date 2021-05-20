@@ -1,6 +1,0 @@
-{
-    var x -> numz = 2 .z
-    var y -> numz = 3 .z
-
-    zPrint(x+y) .z
-} 

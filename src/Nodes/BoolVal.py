@@ -9,7 +9,8 @@ class BoolVal(Node):
         self.value = value
         super().__init__(
             value=value,
-            children=[]
+            children=[],
+            node_type='BoolVal'
         )
 
     def Evaluate(self, symbol_table: SymbolTable):

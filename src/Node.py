@@ -1,21 +1,10 @@
 from src.SymbolTable import SymbolTable
-from src.Nodes.BinOp import BinOp
-from src.Nodes.UnOp import UnOp
-from src.Nodes.NoOp import NoOp
-from src.Nodes.IntVal import IntVal
-from src.Nodes.BoolVal import BoolVal
-from src.Nodes.StringVal import StringVal
-from src.Nodes.Variable import Variable
-from src.Nodes.Identifier import Identifier
-from src.Nodes.Print import Print
-from src.Nodes.Block import Block
-from src.Nodes.IfElseOp import IfElseOp
-from src.Nodes.WhileOp import WhileOp
 
 class Node:
-    def __init__(self, value, children):
+    def __init__(self, value, children, node_type):
         self.value = value
         self.children = children
+        self.node_type = node_type
 
     def Evaluate(self, symbol_table: SymbolTable):
         pass
@@ -26,34 +15,36 @@ class Node:
 
         tabs: str = "\t" * int(level) if int(level) > 0 else ""
 
-        node_type = type(n)
+        node_type = n.node_type
         out_str = ''
 
-        if node_type == BinOp:
+        if node_type == 'BinOp':
             out_str = f'BinOp - {n.value.type}'
-        elif node_type == UnOp:
+        elif node_type == 'UnOp':
             out_str = f'UnOp - {n.value.type}'
-        elif node_type == NoOp:
+        elif node_type == 'NoOp':
             out_str = f'NoOp'
-        elif node_type == IntVal:
+        elif node_type == 'IntVal':
             out_str = f'IntVal - {n.value.value}'
-        elif node_type == BoolVal:
+        elif node_type == 'BoolVal':
             out_str = f'BoolVal - {n.value.value}'
-        elif node_type == StringVal:
+        elif node_type == 'StringVal':
             out_str = f'StringVal - {n.value.value}'
-        elif node_type == Variable:
+        elif node_type == 'Variable':
             out_str = f'Variable - {n.value}'
-        elif node_type == Identifier:
+        elif node_type == 'Identifier':
             out_str = f'Identifier - {n.value}'
-        elif node_type == Print:
+        elif node_type == 'Print':
             out_str = f'Print'
-        elif node_type == Block:
+        elif node_type == 'Block':
             out_str = f'Block'
-        elif node_type == IfElseOp:
+        elif node_type == 'IfElseOp':
             out_str = f'IfElse'
-        elif node_type == WhileOp:
+        elif node_type == 'WhileOp':
             out_str = f'While'
-            
+        elif node_type == 'FuncOp':
+            out_str = f'FuncOp'
+
         return out_str
 
 

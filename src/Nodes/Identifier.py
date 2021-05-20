@@ -8,7 +8,8 @@ class Identifier(Node):
         self.type = type
         super().__init__(
             value=value,
-            children=[self.child]
+            children=[self.child],
+            node_type='Identifier'
         )
 
     def Evaluate(self, symbol_table: SymbolTable):

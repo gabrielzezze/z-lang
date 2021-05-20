@@ -9,7 +9,8 @@ class IfElseOp(Node):
         self.false_child = false_child
         super().__init__(
             value=condition,
-            children=[true_child, false_child, condition]
+            children=[true_child, false_child, condition],
+            node_type='IfElseOp'
         )
 
     def Evaluate(self, symbol_table: SymbolTable):

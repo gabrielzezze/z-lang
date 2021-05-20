@@ -6,7 +6,8 @@ class Print(Node):
         self.expression = expression
         super().__init__(
             value=None,
-            children=expression
+            children=expression,
+            node_type='Print'
         )
 
     def Evaluate(self, symbol_table: SymbolTable):

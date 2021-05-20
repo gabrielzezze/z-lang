@@ -8,7 +8,8 @@ class WhileOp(Node):
         self.child = child
         super().__init__(
             value=condition,
-            children=[child, condition]
+            children=[child, condition],
+            node_type='WhileOp'
         )
 
     def Evaluate(self, symbol_table: SymbolTable):

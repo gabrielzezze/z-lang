@@ -1,8 +1,9 @@
-from src.Nodes.FuncOp import FuncOp
+from sly import Parser
+from src.Nodes.Root import Root
+from src.Nodes.FuncCall import FuncCall
 from src.SymbolTable import SymbolTable
 from src.Token import Token
 from src.Types.TokenTypes import TokenTypes
-from sly import Parser
 from src.Tokenizer import ZTokenizer
 from src.Nodes.BinOp import BinOp
 from src.Nodes.UnOp import UnOp
@@ -16,7 +17,8 @@ from src.Nodes.Print import Print
 from src.Nodes.Block import Block
 from src.Nodes.IfElseOp import IfElseOp
 from src.Nodes.WhileOp import WhileOp
-from src.Nodes.FuncArgument import FuncArgument
+from src.Nodes.FuncArguments import FuncArguments
+from src.Nodes.FuncDeclaration import FuncDeclaration
 from src.Nodes.Return import ReturnStatement
 
 class ZParser(Parser):
@@ -34,6 +36,19 @@ class ZParser(Parser):
         self.names = {}
 
     @_(
+        '{ function }'
+    )
+    def func_def(self, p):
+        root_node = Root()
+        children = []
+        for func in p._1_repeat:
+            children.append(func[0])
+
+        root_node.children = children
+        return root_node
+
+
+    @_(
         'FUNCTION IDENTIFIER PARENTHESIS_OPEN { argument } PARENTHESIS_CLOSE block EOL'
     )
     def function(self, p):
@@ -41,13 +56,12 @@ class ZParser(Parser):
         node = NoOp()
 
         if values[0].type == 'FUNCTION':
-            token = Token(token_type=TokenTypes.FUNCTION, value=values[0].value)
-            arguments = []
+            func_args = FuncArguments(func_name=values[1].value)
             if len(values) > 6:
                 for arg in p.argument:
-                    arguments.append(arg)
+                    func_args.add_argument(name=arg.value, type=arg.type)
 
-            node = FuncOp(value=token, child_block=p.block, arguments=arguments)
+            return FuncDeclaration(func_name=values[1].value, statements=p.block, args=func_args)
         
         return node
 
@@ -60,7 +74,6 @@ class ZParser(Parser):
     def argument(self, p):
         values = p._slice
 
-        node = NoOp()
         token = None
         if values[0].type == 'INT':
             token = Token(token_type=TokenTypes.INT, value=values[1].value)
@@ -71,9 +84,8 @@ class ZParser(Parser):
         elif values[0].type == 'BOOL_TYPE':
             token = Token(token_type=TokenTypes.BOOL_TYPE, value=values[1].value)
         
-        node = FuncArgument(value=token)
 
-        return node
+        return token
 
 
 
@@ -104,16 +116,16 @@ class ZParser(Parser):
         'IF PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE command EOL',
         
         'VAR IDENTIFIER ARROW INT EOL',
-        'VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL',
         'VAR IDENTIFIER ARROW INT ASSIGNMENT func_call EOL',
+        'VAR IDENTIFIER ARROW INT ASSIGNMENT or_expression EOL',
         
         'VAR IDENTIFIER ARROW STRING_TYPE EOL',
-        'VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL',
         'VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT func_call EOL',
+        'VAR IDENTIFIER ARROW STRING_TYPE ASSIGNMENT or_expression EOL',
         
         'VAR IDENTIFIER ARROW BOOL_TYPE EOL',
-        'VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL',
         'VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT func_call EOL',
+        'VAR IDENTIFIER ARROW BOOL_TYPE ASSIGNMENT or_expression EOL',
         
         'IDENTIFIER ASSIGNMENT or_expression EOL',
         'IDENTIFIER ASSIGNMENT func_call EOL',
@@ -141,14 +153,14 @@ class ZParser(Parser):
         
         elif type == 'IF':
             if len(values) == 6:
-                node = IfElseOp(true_child=p.command0, false_child=None, condition=p.or_expression)
-            elif len(values) == 8:
-                node = IfElseOp(true_child=p.command0, false_child=p.command1, condition=p.or_expression)
+                node = IfElseOp(true_child=p.command, false_child=None, condition=p.or_expression)
+            elif len(values) > 6:
+                node = IfElseOp(true_child=p.command, false_child=p.elif_statement, condition=p.or_expression)
         
         elif type == 'VAR':
             expression = NoOp()
             if len(values) > 5:
-                if p.or_expression:
+                if values[5].type == 'or_expression':
                     expression = p.or_expression
                 else:
                     expression = p.func_call
@@ -162,7 +174,7 @@ class ZParser(Parser):
             node = Identifier(value=values[1].value, expression=expression, type=type)
         
         elif type == 'IDENTIFIER':
-            if p.or_expression:
+            if values[5].type == 'or_expression':
                 expression = p.or_expression
             else:
                 expression = p.func_call
@@ -178,10 +190,16 @@ class ZParser(Parser):
         return node
 
     @_(
-        'IDENTIFIER PARENTHESIS_OPEN { or_expression } PARENTHESIS_CLOSE EOL'
+        'IDENTIFIER PARENTHESIS_OPEN { or_expression } PARENTHESIS_CLOSE'
     )
     def func_call(self, p):
-        return NoOp()
+        args = []
+        node = NoOp()
+        for arg in p.or_expression:
+            args.append(arg)
+        
+        node = FuncCall(value=p._slice[0].value, children=args)
+        return node
 
 
     @_(
@@ -199,7 +217,7 @@ class ZParser(Parser):
         elif values[0].type == "ELIF" and len(values) == 4:
             node = IfElseOp(condition=p.or_expression, true_child=p.command, false_child=None)
 
-        elif values[0].type == "else":
+        elif values[0].type == "else_statement":
             node = p.else_statement
 
         return node
@@ -359,6 +377,7 @@ class ZParser(Parser):
         'PLUS factor %prec UPLUS',
         'MINUS factor %prec UMINUS',
         'PARENTHESIS_OPEN or_expression PARENTHESIS_CLOSE',
+        'IDENTIFIER PARENTHESIS_OPEN { or_expression } PARENTHESIS_CLOSE',
         'IDENTIFIER',
         'STRING',
         'TRUE',
@@ -386,10 +405,18 @@ class ZParser(Parser):
             return p.or_expression
         
         elif type == 'IDENTIFIER':
-            node = Variable(value=token_value)
+            if len(values) > 1:
+                args = []
+                for arg in p.or_expression:
+                    args.append(arg)
+                
+                node = FuncCall(value=token_value, children=args)
+            else:
+                node = Variable(value=token_value)
 
         elif type == 'STRING':
-            node = StringVal(value=token_value)
+            token = Token(token_type=TokenTypes.STRING, value=token_value)
+            node = StringVal(value=token)
 
         elif type == 'TRUE':
             token = Token(token_type=TokenTypes.TRUE, value=True)

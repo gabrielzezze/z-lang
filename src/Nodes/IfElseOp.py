@@ -16,8 +16,10 @@ class IfElseOp(Node):
     def Evaluate(self, symbol_table: SymbolTable):
         _type, condition = self.condition.Evaluate(symbol_table=symbol_table)
         if condition:
-            self.true_child.Evaluate(symbol_table=symbol_table)
+            return_data = self.true_child.Evaluate(symbol_table=symbol_table)
+            return return_data
         else:
             if self.false_child is not None:
-                self.false_child.Evaluate(symbol_table)
+                return_data = self.false_child.Evaluate(symbol_table)
+                return return_data
         return

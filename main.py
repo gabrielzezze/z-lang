@@ -27,8 +27,13 @@ if __name__ == '__main__':
     tokens = lexer.tokenize(file_content)
 
     root = parser.parse(tokens)
-    print(root)
     
-    # symbol_table = SymbolTable()
-    # root.Evaluate(symbol_table)
+    symbol_table = SymbolTable()
+    root.Evaluate(symbol_table)
 
+    main_func = symbol_table.get_function('main')
+    main_func_node = main_func.get("value", None)
+    if main_func_node is None:
+        raise ValueError('main function was not defined')
+
+    main_func_node.statements.Evaluate(symbol_table)

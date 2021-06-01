@@ -1,3 +1,4 @@
+from src.Nodes.Return import ReturnStatement
 from src.Node import Node
 from src.SymbolTable import SymbolTable
 
@@ -12,4 +13,6 @@ class Block(Node):
     
     def Evaluate(self, symbol_table: SymbolTable):
         for child in self.children:
-            child.Evaluate(symbol_table)
+            return_data = child.Evaluate(symbol_table)
+            if type(child) == ReturnStatement:
+                return return_data

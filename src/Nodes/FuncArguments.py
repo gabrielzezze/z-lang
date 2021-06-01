@@ -2,9 +2,9 @@ from src.Node import Node
 from src.SymbolTable import SymbolTable
 
 class FuncArguments(Node):
-    def __init__(self, func_name):
+    def __init__(self, func_name, return_type):
         self.args = {
-            func_name: { "value": None } 
+            func_name: { "value": None, "type": return_type } 
         }
         super().__init__(
             value=func_name, 

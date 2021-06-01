@@ -49,19 +49,27 @@ class ZParser(Parser):
 
 
     @_(
-        'FUNCTION IDENTIFIER PARENTHESIS_OPEN { argument } PARENTHESIS_CLOSE block EOL'
+        'BOOL_TYPE FUNCTION IDENTIFIER PARENTHESIS_OPEN { argument } PARENTHESIS_CLOSE block EOL',
+        'STRING_TYPE FUNCTION IDENTIFIER PARENTHESIS_OPEN { argument } PARENTHESIS_CLOSE block EOL',
+        'INT FUNCTION IDENTIFIER PARENTHESIS_OPEN { argument } PARENTHESIS_CLOSE block EOL'
     )
     def function(self, p):
         values = p._slice
         node = NoOp()
 
-        if values[0].type == 'FUNCTION':
-            func_args = FuncArguments(func_name=values[1].value)
-            if len(values) > 6:
+        if values[1].type == 'FUNCTION':
+            return_type = TokenTypes.INT
+            if values[0].type == 'BOOL_TYPE':
+                return_type = TokenTypes.BOOL_TYPE
+            elif values[0].type == 'STRING_TYPE':
+                return_type = TokenTypes.STRING_TYPE
+
+            func_args = FuncArguments(func_name=values[2].value, return_type=Token(value='', token_type=return_type))
+            if len(values) > 7:
                 for arg in p.argument:
                     func_args.add_argument(name=arg.value, type=arg.type)
 
-            return FuncDeclaration(func_name=values[1].value, statements=p.block, args=func_args)
+            return FuncDeclaration(func_name=values[2].value, statements=p.block, args=func_args)
         
         return node
 

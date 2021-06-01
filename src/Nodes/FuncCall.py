@@ -1,3 +1,4 @@
+from src.Types.TokenTypes import TokenTypes
 from src.Nodes.Return import ReturnStatement
 from src.Node import Node
 from src.SymbolTable import SymbolTable
@@ -35,8 +36,25 @@ class FuncCall(Node):
                 func_symbol_table.set(key, type, value)
 
 
+            func_key = list(func_args_keys)[0]
+            return_type = func_node.args.args[func_key].get('type', None).type
             returned_data = func_node.statements.Evaluate(symbol_table=func_symbol_table)
-            return returned_data
+
+            if returned_data is None:
+                raise ValueError(f'Function {func_key} must return {return_type}')
+            
+            returned_type = returned_data[0]
+            returned_value = returned_data[1]
+
+            if returned_type == TokenTypes.INT and return_type != TokenTypes.INT:
+                raise ValueError(f'Function {func_key} returned incorrect type')
+            elif returned_type == TokenTypes.STRING and return_type != TokenTypes.STRING_TYPE:
+                raise ValueError(f'Function {func_key} returned incorrect type')
+            elif returned_type in [TokenTypes.FALSE, TokenTypes.TRUE] and return_type != TokenTypes.BOOL_TYPE:
+                raise ValueError(f'Function {func_key} returned incorrect type')
+
+
+            return returned_type, returned_value
 
 
         raise ValueError(f'Function {self.value} was not declared')

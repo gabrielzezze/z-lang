@@ -12,8 +12,8 @@ class Identifier(Node):
             node_type='Identifier'
         )
 
-    def Evaluate(self, symbol_table: SymbolTable):
-        type, value = self.child.Evaluate(symbol_table=symbol_table)
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
+        type, value = self.child.Evaluate(symbol_table, module, builder, printf)
         if type != None and type != self.type:
             raise ValueError(f'Cannot asscoate {self.type} with {type}')
         elif self.type is None and symbol_table.get(self.value) is None:

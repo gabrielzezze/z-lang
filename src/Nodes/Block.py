@@ -11,8 +11,8 @@ class Block(Node):
         )
         self.children = []
     
-    def Evaluate(self, symbol_table: SymbolTable):
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
         for child in self.children:
-            return_data = child.Evaluate(symbol_table)
+            return_data = child.Evaluate(symbol_table, module, builder, printf)
             if type(child) == ReturnStatement:
                 return return_data

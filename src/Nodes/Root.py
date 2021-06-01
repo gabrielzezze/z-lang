@@ -9,6 +9,6 @@ class Root(Node):
             node_type='ROOT'
         )
 
-    def Evaluate(self, symbol_table: SymbolTable):
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
         for child in self.children:
-            child.Evaluate(symbol_table)
+            child.Evaluate(symbol_table, module, builder, printf)

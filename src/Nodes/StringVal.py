@@ -12,5 +12,5 @@ class StringVal(Node):
         )
 
 
-    def Evaluate(self, symbol_table: SymbolTable):
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
         return TokenTypes.STRING, str(self.value.value)

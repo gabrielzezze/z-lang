@@ -31,17 +31,22 @@ if __name__ == '__main__':
     # Tokenize and parse language
     tokens = lexer.tokenize(file_content)
     root = parser.parse(tokens)
+
+    # Codegen vars
+    module = codegen.module
+    builder = codegen.builder
+    printf = codegen.printf
     
     # Set functions declarations to symbol table
     symbol_table = SymbolTable()
-    root.Evaluate(symbol_table)
+    root.Evaluate(symbol_table, module, builder, printf)
 
     # Evaluate main function
     main_func = symbol_table.get_function('main')
     main_func_node = main_func.get("value", None)
     if main_func_node is None:
         raise ValueError('main function was not defined')
-    returned_data = main_func_node.statements.Evaluate(symbol_table)
+    returned_data = main_func_node.statements.Evaluate(symbol_table, module, builder, printf)
 
     # Check main function returned data type
     if returned_data is None:

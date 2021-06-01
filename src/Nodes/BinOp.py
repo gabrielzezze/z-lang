@@ -29,9 +29,9 @@ class BinOp(Node):
         self.child_2 = child2
 
     
-    def Evaluate(self, symbol_table: SymbolTable):
-        type_operand_1, operand_1 = self.child_1.Evaluate(symbol_table)
-        type_operand_2, operand_2 = self.child_2.Evaluate(symbol_table)
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
+        type_operand_1, operand_1 = self.child_1.Evaluate(symbol_table, module, builder, printf)
+        type_operand_2, operand_2 = self.child_2.Evaluate(symbol_table, module, builder, printf)
         if self.value.type == TokenTypes.MULTIPLICATION:
             if type_operand_1 != TokenTypes.INT or type_operand_2 != TokenTypes.INT:
                 raise TypeError('[SEMANTIC ERROR] Tried Multiplication op between non INT values')

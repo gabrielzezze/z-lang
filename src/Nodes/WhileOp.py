@@ -12,10 +12,10 @@ class WhileOp(Node):
             node_type='WhileOp'
         )
 
-    def Evaluate(self, symbol_table: SymbolTable):
-        _type, condition = self.condition.Evaluate(symbol_table=symbol_table)
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
+        _type, condition = self.condition.Evaluate(symbol_table, module, builder, printf)
         while condition:
-            self.child.Evaluate(symbol_table=symbol_table)
-            _type, condition = self.condition.Evaluate(symbol_table=symbol_table)
+            self.child.Evaluate(symbol_table, module, builder, printf)
+            _type, condition = self.condition.Evaluate(symbol_table, module, builder, printf)
 
         return

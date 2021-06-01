@@ -13,7 +13,7 @@ class BoolVal(Node):
             node_type='BoolVal'
         )
 
-    def Evaluate(self, symbol_table: SymbolTable):
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
         type = TokenTypes.TRUE
         if not self.value.value:
             type = TokenTypes.FALSE

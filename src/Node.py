@@ -6,7 +6,7 @@ class Node:
         self.children = children
         self.node_type = node_type
 
-    def Evaluate(self, symbol_table: SymbolTable):
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
         pass
 
     def traverse(self, n, level=0):

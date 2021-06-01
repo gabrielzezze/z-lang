@@ -14,8 +14,8 @@ class UnOp(Node):
         self.child = child
     
 
-    def Evaluate(self, symbol_table: SymbolTable):
-        operand = self.child.Evaluate(symbol_table)
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
+        operand = self.child.Evaluate(symbol_table, module, builder, printf)
 
         if self.value.type == TokenTypes.MINUS:
             return operand*-1

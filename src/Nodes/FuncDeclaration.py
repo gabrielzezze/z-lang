@@ -12,6 +12,6 @@ class FuncDeclaration(Node):
             node_type='FUNCDEC'
         )
 
-    def Evaluate(self, symbol_table: SymbolTable):
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
         symbol_table.set_function(key=self.value, value=self)
         return

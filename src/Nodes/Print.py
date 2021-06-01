@@ -10,6 +10,6 @@ class Print(Node):
             node_type='Print'
         )
 
-    def Evaluate(self, symbol_table: SymbolTable):
-        _type, result = self.expression.Evaluate(symbol_table=symbol_table)
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
+        _type, result = self.expression.Evaluate(symbol_table, module, builder, printf)
         print(result)

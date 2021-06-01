@@ -28,5 +28,5 @@ class FuncArguments(Node):
     def set_argument(self, key: str, value):
         pass
 
-    def Evaluate(self, symbol_table: SymbolTable):
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
         pass

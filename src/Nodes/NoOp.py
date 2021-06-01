@@ -10,6 +10,6 @@ class NoOp(Node):
         )
         pass
 
-    def Evaluate(self, symbol_table):
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
         return None, None
 

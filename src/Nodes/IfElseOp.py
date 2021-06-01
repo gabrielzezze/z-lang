@@ -13,13 +13,13 @@ class IfElseOp(Node):
             node_type='IfElseOp'
         )
 
-    def Evaluate(self, symbol_table: SymbolTable):
-        _type, condition = self.condition.Evaluate(symbol_table=symbol_table)
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
+        _type, condition = self.condition.Evaluate(symbol_table, module, builder, printf)
         if condition:
-            return_data = self.true_child.Evaluate(symbol_table=symbol_table)
+            return_data = self.true_child.Evaluate(symbol_table, module, builder, printf)
             return return_data
         else:
             if self.false_child is not None:
-                return_data = self.false_child.Evaluate(symbol_table)
+                return_data = self.false_child.Evaluate(symbol_table, module, builder, printf)
                 return return_data
         return

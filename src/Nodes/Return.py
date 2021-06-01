@@ -10,6 +10,6 @@ class ReturnStatement(Node):
             node_type='RETURN'
         )
 
-    def Evaluate(self, symbol_table: SymbolTable):
-        type, value = self.expression.Evaluate(symbol_table)
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
+        type, value = self.expression.Evaluate(symbol_table, module, builder, printf)
         return type, value

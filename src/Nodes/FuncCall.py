@@ -12,7 +12,7 @@ class FuncCall(Node):
             node_type='FUNCCALL'
         )
 
-    def Evaluate(self, symbol_table: SymbolTable):
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
         func_node_data = symbol_table.get_function(self.value)
         if func_node_data is not None:
             func_symbol_table = SymbolTable()
@@ -30,7 +30,7 @@ class FuncCall(Node):
                 key = list(func_args_keys)[idx+1]
                 arg_type = func_node.args.args[key].get('type', None)
 
-                type, value = self.children[idx].Evaluate(symbol_table)
+                type, value = self.children[idx].Evaluate(symbol_table, module, builder, printf)
                 if arg_type != type:
                     raise ValueError('Agurment given is not the correct type')
                 func_symbol_table.set(key, type, value)
@@ -38,7 +38,7 @@ class FuncCall(Node):
 
             func_key = list(func_args_keys)[0]
             return_type = func_node.args.args[func_key].get('type', None).type
-            returned_data = func_node.statements.Evaluate(symbol_table=func_symbol_table)
+            returned_data = func_node.statements.Evaluate(func_symbol_table, module, builder, printf)
 
             if returned_data is None:
                 raise ValueError(f'Function {func_key} must return {return_type}')

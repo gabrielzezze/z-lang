@@ -10,7 +10,7 @@ class Variable(Node):
         )
         self.value = value
 
-    def Evaluate(self, symbol_table: SymbolTable):
+    def Evaluate(self, symbol_table: SymbolTable, builder, module, printf):
         symbol_table_entry = symbol_table.get(self.value)
         type = symbol_table_entry.get("type", None)
         value = symbol_table_entry.get("value", None)

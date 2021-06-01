@@ -1,6 +1,5 @@
 from llvmlite import ir, binding
 
-
 class CodeGen():
     def __init__(self):
         self.binding = binding
@@ -37,7 +36,7 @@ class CodeGen():
         # Declare Printf function
         voidptr_ty = ir.IntType(8).as_pointer()
         printf_ty = ir.FunctionType(ir.IntType(32), [voidptr_ty], var_arg=True)
-        printf = ir.Function(self.module, printf_ty, name="zPrint")
+        printf = ir.Function(self.module, printf_ty, name="printf")
         self.printf = printf
 
     def _compile_ir(self):

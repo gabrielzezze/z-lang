@@ -2,7 +2,7 @@ from src.Types.TokenTypes import TokenTypes
 from src.Nodes.Return import ReturnStatement
 from src.Node import Node
 from src.SymbolTable import SymbolTable
-
+from llvmlite import ir
 
 class FuncCall(Node):
     def __init__(self, value, children):
@@ -30,10 +30,13 @@ class FuncCall(Node):
                 key = list(func_args_keys)[idx+1]
                 arg_type = func_node.args.args[key].get('type', None)
 
-                type, value = self.children[idx].Evaluate(symbol_table)
+                type, value, i = self.children[idx].Evaluate(symbol_table)
                 if arg_type != type:
                     raise ValueError('Agurment given is not the correct type')
-                func_symbol_table.set(key, type, value)
+
+                alloc = ir.alloca(i.type)
+                ir.store(i, alloc)
+                func_symbol_table.set(key, type, value, alloc)
 
 
             func_key = list(func_args_keys)[0]

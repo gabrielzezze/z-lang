@@ -13,9 +13,16 @@ class WhileOp(Node):
         )
 
     def Evaluate(self, symbol_table: SymbolTable):
-        _type, condition = self.condition.Evaluate(symbol_table=symbol_table)
-        while condition:
-            self.child.Evaluate(symbol_table=symbol_table)
-            _type, condition = self.condition.Evaluate(symbol_table=symbol_table)
+
+        while_entry = self.builder.append_basic_block(name=f'while_{self.id}')
+        while_exit = self.builder.append_basic_block(name=f'exit_while_{self.id}')
+        _type, condition, condition_i = self.condition.Evaluate(symbol_table=symbol_table)
+        self.builder.cbranch(condition_i, while_entry, while_exit)
+
+        self.builder.position_at_start(while_entry)
+        self.child.Evaluate(symbol_table=symbol_table)
+        _type, condition, condition_i = self.condition.Evaluate(symbol_table)
+        self.builder.cbranch(condition_i, while_entry, while_exit)
+        self.builder.position_at_start(while_exit)
 
         return

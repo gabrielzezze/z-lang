@@ -1,23 +1,13 @@
 numz func main() {
-    var x -> numz = 2 .z
-    var y -> numz = add_2(x) .z
     
-    If (x is_lesser_than 1) {
-        zPrint('Menor') .z
-    }
-    Elif (x is_equal_to 2) {
-        zPrint('Igual') .z
-    } 
-    Else {
-        zPrint('Maior') .z
+    var x -> numz = 2 .z
+
+    While (x is_lesser_than 6) {
+        x = x+2 .z
+        zPrint(x) .z
     } .z
 
-    return 2 .z
+    return 0 .z
 } .z
 
-
-
-numz func add_2(numz x) {
-    return 2+2 .z
-} .z
 

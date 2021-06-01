@@ -15,13 +15,18 @@ class UnOp(Node):
     
 
     def Evaluate(self, symbol_table: SymbolTable):
-        operand = self.child.Evaluate(symbol_table)
+        type, operand, i = self.child.Evaluate(symbol_table)
 
         if self.value.type == TokenTypes.MINUS:
-            return operand*-1
+            new_i = ir.Constant(ir.IntType(8), operand*-1)
+            return TokenTypes.INT, operand*-1, new_i
+
         elif self.value.type == TokenTypes.NOT:
-            return not operand
+            token_type = TokenTypes.TRUE if not operand else TokenTypes.FALSE
+            new_i = ir.Constant(ir.IntType(8), 1 if token_type==TokenTypes.TRUE else 0)
+            return token_type, not operand, new_i
+        
         else:
-            return operand
+            return type, operand, i
         
 

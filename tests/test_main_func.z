@@ -1,13 +1,16 @@
+numz func add_2(numz x) {
+    zPrint(x) .z
+    return x+2.z
+} .z
+
 numz func main() {
     
     var x -> numz = 2 .z
 
-    While (x is_lesser_than 6) {
-        x = x+2 .z
-        zPrint(x) .z
+    While(x is_lesser_than 6) {
+        x = add_2(x) .z
     } .z
 
+    zPrint(x) .z
     return 0 .z
 } .z
-
-

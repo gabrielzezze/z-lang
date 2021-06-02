@@ -11,7 +11,7 @@ class Print(Node):
         )
 
     def Evaluate(self, symbol_table: SymbolTable):
-        _type, result, i = self.expression.Evaluate(symbol_table=symbol_table)
+        i = self.expression.Evaluate(symbol_table=symbol_table)
         
         # Declare argument list
         voidptr_ty = ir.IntType(8).as_pointer()
@@ -20,5 +20,4 @@ class Print(Node):
 
         # Call Print Function
         self.builder.call(self.printf, [fmt_arg, i])
-
-        print(result)
+        

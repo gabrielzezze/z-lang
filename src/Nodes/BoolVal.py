@@ -15,9 +15,5 @@ class BoolVal(Node):
         )
 
     def Evaluate(self, symbol_table: SymbolTable):
-        type = TokenTypes.TRUE
-        if not self.value.value:
-            type = TokenTypes.FALSE
-        
-        i = ir.Constant(ir.IntType(8), 1 if self.value.value else 0)
-        return type, self.value.value, i
+        i = ir.Constant(ir.IntType(1), 1 if self.value.value else 0)
+        return i

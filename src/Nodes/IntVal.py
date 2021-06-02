@@ -15,4 +15,4 @@ class IntVal(Node):
     def Evaluate(self, symbol_table: SymbolTable):
         num = int(self.value.value)
         i = ir.Constant(ir.IntType(8), num)
-        return TokenTypes.INT, num, i
+        return i

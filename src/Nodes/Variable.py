@@ -13,11 +13,8 @@ class Variable(Node):
 
     def Evaluate(self, symbol_table: SymbolTable):
         symbol_table_entry = symbol_table.get(self.value)
-        type = symbol_table_entry.get("type", None)
-        value = symbol_table_entry.get("value", None)
         alloc_ptr = symbol_table_entry.get("pointer", None)
-
-        i = self.builder.load(alloc_ptr)
+        i = self.builder.load(alloc_ptr, name=self.value)
             
-        return type, value, i
+        return i
     

@@ -14,5 +14,5 @@ class StringVal(Node):
 
 
     def Evaluate(self, symbol_table: SymbolTable):
-        i = ir.Constant(ir.ArrayType(ir.IntType(8), len(self.value.value)), bytearray(self.value.value.encode("utf8")))
-        return TokenTypes.STRING, str(self.value.value), i
+        i = ir.Constant(ir.ArrayType(ir.IntType(8), 64), bytearray(self.value.value.encode("utf8")))
+        return i

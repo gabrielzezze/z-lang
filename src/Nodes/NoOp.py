@@ -13,5 +13,5 @@ class NoOp(Node):
 
     def Evaluate(self, symbol_table):
         i = ir.Constant(ir.IntType(8), 0)
-        return None, None, i
+        return i
 

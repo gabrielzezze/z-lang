@@ -24,8 +24,9 @@ class IfElseOp(Node):
                     i = true_return_data
             
             with otherwise:
-                false_return_data = self.false_child.Evaluate(symbol_table=symbol_table)
-                if false_return_data is not None:
-                    i = false_return_data
+                if self.false_child:
+                    false_return_data = self.false_child.Evaluate(symbol_table=symbol_table)
+                    if false_return_data is not None:
+                        i = false_return_data
         
         return i

@@ -12,6 +12,8 @@ class Variable(Node):
         self.value = value
 
     def Evaluate(self, symbol_table: SymbolTable):
+        print(symbol_table.table)
+        print(self.value)
         symbol_table_entry = symbol_table.get(self.value)
         alloc_ptr = symbol_table_entry.get("pointer", None)
         i = self.builder.load(alloc_ptr, name=self.value)

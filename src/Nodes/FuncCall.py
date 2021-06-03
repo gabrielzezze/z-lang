@@ -28,9 +28,9 @@ class FuncCall(Node):
 
             args_values = []
             for arg in self.children:
-                i = arg.Evaluate(func_symbol_table)
+                i = arg.Evaluate(symbol_table)
                 args_values.append(i)
-            
+                
             ret = self.builder.call(func_node_data.get('pointer', None), args_values)
             return ret
             

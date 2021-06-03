@@ -24,7 +24,7 @@ from src.Nodes.Return import ReturnStatement
 class ZParser(Parser):
     tokens = ZTokenizer.tokens
 
-    debugfile = 'test_parser.out'
+    debugfile = 'debug/test_parser.out'
 
     precedence = (
         ('left', PLUS, MINUS),
@@ -148,7 +148,6 @@ class ZParser(Parser):
         values = p._slice
         type = values[0].type
 
-
         node = None
         if type == 'EOL':
             node = NoOp()
@@ -182,12 +181,12 @@ class ZParser(Parser):
             node = Identifier(value=values[1].value, expression=expression, type=type)
         
         elif type == 'IDENTIFIER':
-            if values[5].type == 'or_expression':
+            if values[2].type == 'or_expression':
                 expression = p.or_expression
             else:
                 expression = p.func_call
                 
-            node = Identifier(value=values[0].value, expression=p.or_expression)
+            node = Identifier(value=values[0].value, expression=expression, type=None)
 
         elif type == 'block':
             node = p.block

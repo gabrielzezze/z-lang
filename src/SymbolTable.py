@@ -8,11 +8,11 @@ class SymbolTable:
     def get(self, key: str):
         data = self.table.get(key, None)
         if data is None:
-            raise ValueError('Undeclared identifier used')
+            return None
         return data
 
-    def set(self, key: str, type, value):
-        self.table[key] = { "value": value, "type": type }
+    def set(self, key: str, pointer):
+        self.table[key] = { "pointer": pointer }
         return
 
     
@@ -22,6 +22,6 @@ class SymbolTable:
             return None
         return data
 
-    def set_function(self, key: str, value):
-        self.functions[key] = { "value": value, "type": TokenTypes.FUNCTION }
+    def set_function(self, key: str, value, func_symbol_table, func_i):
+        self.functions[key] = { "value": value, "type": TokenTypes.FUNCTION, "symbol_table": func_symbol_table, "pointer": func_i}
         return

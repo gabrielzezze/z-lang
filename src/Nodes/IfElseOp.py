@@ -14,12 +14,19 @@ class IfElseOp(Node):
         )
 
     def Evaluate(self, symbol_table: SymbolTable):
-        _type, condition = self.condition.Evaluate(symbol_table=symbol_table)
-        if condition:
-            return_data = self.true_child.Evaluate(symbol_table=symbol_table)
-            return return_data
-        else:
-            if self.false_child is not None:
-                return_data = self.false_child.Evaluate(symbol_table)
-                return return_data
-        return
+        condition_i = self.condition.Evaluate(symbol_table=symbol_table)
+
+        i = None
+        with self.builder.if_else(condition_i) as (then, otherwise):
+            with then:
+                true_return_data = self.true_child.Evaluate(symbol_table=symbol_table)
+                if true_return_data is not None:
+                    i = true_return_data
+            
+            with otherwise:
+                if self.false_child:
+                    false_return_data = self.false_child.Evaluate(symbol_table=symbol_table)
+                    if false_return_data is not None:
+                        i = false_return_data
+        
+        return i

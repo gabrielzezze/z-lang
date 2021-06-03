@@ -1,5 +1,6 @@
 from src.Node import Node
 from src.SymbolTable import SymbolTable
+from llvmlite import ir
 
 class NoOp(Node):
     def __init__(self):
@@ -11,5 +12,6 @@ class NoOp(Node):
         pass
 
     def Evaluate(self, symbol_table):
-        return None, None
+        i = ir.Constant(ir.IntType(8), 0)
+        return i
 

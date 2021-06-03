@@ -1,10 +1,17 @@
 from src.SymbolTable import SymbolTable
+import uuid
 
 class Node:
+    builder = None
+    printf = None
+    module = None
+    global_fmt = None
+
     def __init__(self, value, children, node_type):
         self.value = value
         self.children = children
         self.node_type = node_type
+        self.id = str(uuid.uuid4()).replace('-', '_')
 
     def Evaluate(self, symbol_table: SymbolTable):
         pass

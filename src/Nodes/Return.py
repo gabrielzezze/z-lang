@@ -11,5 +11,5 @@ class ReturnStatement(Node):
         )
 
     def Evaluate(self, symbol_table: SymbolTable):
-        type, value = self.expression.Evaluate(symbol_table)
-        return type, value
+        i = self.expression.Evaluate(symbol_table)
+        return self.builder.ret(i)

@@ -1,9 +1,12 @@
 import sys
+from src.Node import Node
 from src.Types.TokenTypes import TokenTypes
 from src.SymbolTable import SymbolTable
 from src.Parser import ZParser
 from src.Tokenizer import ZTokenizer 
 from src.Codegen.CodeGen import CodeGen
+from llvmlite import ir
+
 
 if __name__ == '__main__':
     
@@ -22,9 +25,10 @@ if __name__ == '__main__':
     parser = ZParser()
     codegen = CodeGen()
 
+
     # Get tokens from file
     tokens = lexer.tokenize(file_content)
-    with open('test_tokens.out', 'w') as tmp:
+    with open('debug/test_tokens.out', 'w') as tmp:
         for token in tokens:
             tmp.write(str(token) + '\n')
     
@@ -32,6 +36,22 @@ if __name__ == '__main__':
     tokens = lexer.tokenize(file_content)
     root = parser.parse(tokens)
     
+    # Codegen vars
+    module = codegen.module
+    builder = codegen.builder
+    printf = codegen.printf
+
+    Node.module = module
+    Node.builder = builder
+    Node.printf = printf
+
+    fmt = "%i \n\0"
+    c_fmt = ir.Constant(ir.ArrayType(ir.IntType(8), len(fmt)), bytearray(fmt.encode("utf8")))
+    Node.global_fmt = ir.GlobalVariable(module, c_fmt.type, name="fstr")
+    Node.global_fmt.linkage = 'internal'
+    Node.global_fmt.global_constant = True
+    Node.global_fmt.initializer = c_fmt
+
     # Set functions declarations to symbol table
     symbol_table = SymbolTable()
     root.Evaluate(symbol_table)
@@ -41,12 +61,9 @@ if __name__ == '__main__':
     main_func_node = main_func.get("value", None)
     if main_func_node is None:
         raise ValueError('main function was not defined')
-    returned_data = main_func_node.statements.Evaluate(symbol_table)
 
-    # Check main function returned data type
-    if returned_data is None:
-        raise ValueError('main function did not return an int')
-
-    returned_type = returned_data[0]
-    if returned_type != TokenTypes.INT:
-        raise ValueError('main did not return an int')
+    symbol_table.functions['main']['pointer'] = codegen.base_func
+    main_func_node.statements.Evaluate(symbol_table)
+    
+    codegen.create_ir()
+    codegen.save_ir('out/output.ll')

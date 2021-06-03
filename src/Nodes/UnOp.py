@@ -2,6 +2,7 @@ from src.Node import Node
 from src.Token import Token
 from src.Types.TokenTypes import TokenTypes 
 from src.SymbolTable import SymbolTable
+from llvmlite import ir
 
 UNARY_OPERATORS = [TokenTypes.PLUS, TokenTypes.MINUS]
 
@@ -15,13 +16,15 @@ class UnOp(Node):
     
 
     def Evaluate(self, symbol_table: SymbolTable):
-        operand = self.child.Evaluate(symbol_table)
+        i = self.child.Evaluate(symbol_table)
 
         if self.value.type == TokenTypes.MINUS:
-            return operand*-1
+            return self.builder.neg(i)
+
         elif self.value.type == TokenTypes.NOT:
-            return not operand
+            return self.builder.not_(i)
+        
         else:
-            return operand
+            return i
         
 

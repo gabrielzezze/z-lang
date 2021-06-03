@@ -1,0 +1,41 @@
+numz func add_2(numz y) {
+    zPrint(y) .z
+    return y+2.z
+} .z
+
+numz func sub(numz h, numz e) {
+    return h-e .z
+} .z
+
+numz func main() {
+    
+    var x -> numz = 2 .z
+
+    zPrint('Pre While') .z
+    While(x is_lesser_than 6) {
+        x = add_2(x) .z
+    } .z
+
+    zPrint(add_2(x)-2) .z
+    
+    If (x is_equal_to 5) {
+        zPrint(10) .z
+    }
+    Elif (x is_greater_than add_2(x)-2) {
+        zPrint(12) .z
+    }
+    Else {
+        zPrint(11) .z
+    } .z
+
+    var y -> charz = 'AQUI' .z
+
+    y = 'AQUI 2' .z
+
+    zPrint(x) .z
+
+    zPrint(sub(x, x)) .z
+
+    return 0 .z
+} .z
+

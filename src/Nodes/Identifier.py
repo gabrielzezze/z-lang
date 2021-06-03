@@ -19,8 +19,10 @@ class Identifier(Node):
         if self.type is None and symbol_table.get(self.value) is None:
             raise ValueError(f'Variable {self.value} was not declared')      
 
-        if symbol_table.get(self.value) is not None and self.type != TokenTypes.STRING_TYPE:
+        if symbol_table.get(self.value) is not None:
             ir_alloc = symbol_table.get(self.value).get("pointer", None)
+            if 'x i8]' in str(ir_alloc.type):
+                ir_alloc = self.builder.alloca(i.type, name=self.value)
         else:
             ir_alloc = self.builder.alloca(i.type, name=self.value)
 

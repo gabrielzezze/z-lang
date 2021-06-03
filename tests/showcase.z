@@ -28,6 +28,10 @@ numz func main() {
         zPrint(11) .z
     } .z
 
+    var y -> charz = 'AQUI' .z
+
+    y = 'AQUI 2' .z
+
     zPrint(x) .z
 
     zPrint(sub(x, x)) .z

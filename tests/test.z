@@ -1,0 +1,17 @@
+numz func printer(charz frase) {
+    zPrint(frase) .z
+
+    var x -> numz = 0 .z
+    While(x is_lesser_than 6) {
+        x = x+2 .z
+        zPrint(x) .z
+    } .z
+
+    return 0 .z
+} .z
+
+numz func main() {
+    zPrint('aq') .z
+    printer('aq') .z
+    return 0 .z
+} .z

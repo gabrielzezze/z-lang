@@ -63,6 +63,8 @@ if __name__ == '__main__':
         raise ValueError('main function was not defined')
 
     symbol_table.functions['main']['pointer'] = codegen.base_func
+    # print(main_func_node)
+    # print(main_func_node.statements.children)
     main_func_node.statements.Evaluate(symbol_table)
     
     codegen.create_ir()

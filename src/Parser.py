@@ -107,12 +107,13 @@ class ZParser(Parser):
         if values[0].type == 'BLOCK_START' and len(values) > 2:
             node = Block()
             for cmd in p.command:
-                node.children.append(cmd)
+                if cmd is not None:
+                    node.children.append(cmd)
         
         elif values[0].type == 'BLOCK_START' and len(values) == 2:
             node = Block()
             node.children.append(NoOp())
-
+            
         return node
 
     @_(
@@ -190,6 +191,9 @@ class ZParser(Parser):
 
         elif type == 'block':
             node = p.block
+
+        elif type == 'func_call':
+            node = p.func_call
         
         elif type == 'RETURN':
             node = ReturnStatement(expression=p.or_expression)

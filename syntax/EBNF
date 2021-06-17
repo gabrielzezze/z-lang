@@ -39,5 +39,5 @@ EXPRESSION = TERM, { ("+" | "-"), TERM } ;
 TERM = FACTOR, { ("*" | "/"), FACTOR } ;
 FACTOR = (("+" | "-"), FACTOR) | NUMBER | "(", EXPRESSION, ")" | IDENTIFIER | "true" | "false ;
 
-COMPARISON = EXPRESSION, ("is_equal_to", "is_not_equal_to", "is_greater_than", "is_greater_equal_than", "is_lesser_than", "is_lesser_equal_than", "or", "and"), EXPRESSION;
+COMPARISON = EXPRESSION, ("is_equal_to", "is_not_equal_to", "is_greater_than", "is_lesser_than", "or", "and"), EXPRESSION;
 
